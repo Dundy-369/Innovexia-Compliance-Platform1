@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pramaan — Compliance Verification for GeM Procurement</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#14183A;
+  --navy-soft:#7178A6;
+  --cream:#F7F3E9;
+  --cream-dim:#EEE7D6;
+  --cream-soft:#C7CBE4;
+  --green:#37B676;
+  --green-deep:#279158;
+  --white:#FFFFFF;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--cream);
+  color:var(--navy);
+  font-family:'IBM Plex Sans', sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{
+  font-family:'Fraunces', serif;
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:inherit;
+}
+a{color:inherit;}
+.wrap{max-width:1160px; margin:0 auto; padding:0 32px;}
+@media(max-width:640px){.wrap{padding:0 22px;}}
+.rule-v{border-left:1px solid currentColor; opacity:0.25;}
+
+/* ---- header ---- */
+header{background:var(--navy); color:var(--cream);}
+.header-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:22px 0;
+}
+.logo{
+  font-family:'Fraunces', serif; font-size:21px; font-weight:600;
+  text-decoration:none; color:var(--cream);
+}
+.logo span{color:var(--green);}
+nav{display:flex; align-items:center; gap:40px;}
+nav ul{list-style:none; display:flex; gap:32px;}
+nav a{text-decoration:none; font-size:14.5px; color:var(--cream-soft); transition:color .15s ease;}
+nav a:hover{color:var(--cream);}
+.nav-actions{display:flex; align-items:center; gap:14px;}
+.btn{
+  font-family:'IBM Plex Sans', sans-serif;
+  font-size:14px; font-weight:500;
+  padding:11px 22px;
+  border:1px solid var(--cream);
+  border-radius:5px;
+  background:transparent;
+  color:var(--cream);
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+  transition:background .15s ease, color .15s ease, opacity .15s ease;
+}
+.btn:hover{opacity:0.85;}
+.btn-fill{background:var(--green); color:var(--navy); border-color:var(--green); font-weight:600;}
+.btn-ghost{border-color:transparent; padding:11px 6px;}
+@media(max-width:900px){ nav ul{display:none;} .nav-actions .btn-ghost{display:none;} }
+
+/* ---- hero ---- */
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:56px;align-items:center;}
+.hero-visual{position:relative;min-height:390px;border:1px solid rgba(247,243,233,.16);border-radius:18px;overflow:hidden;background:#0d1130;box-shadow:0 30px 80px rgba(0,0,0,.24);}
+.hero-visual img{width:100%;height:100%;min-height:390px;object-fit:cover;display:block;}
+.hero-visual .visual-label{position:absolute;left:20px;bottom:20px;padding:9px 12px;border-radius:999px;background:rgba(20,24,58,.84);border:1px solid rgba(247,243,233,.18);color:var(--cream);font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.04em;}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}.hero-visual{min-height:300px}.hero-visual img{min-height:300px;}}
+
+.hero{background:var(--navy); color:var(--cream); padding:88px 0 64px;}
+.hero h1{
+  font-size:66px; line-height:1.06; max-width:15ch; margin-bottom:28px;
+}
+@media(max-width:760px){ .hero h1{font-size:40px;} }
+.hero .dek{
+  font-size:18.5px; color:var(--cream-soft); max-width:52ch; margin-bottom:40px;
+  font-family:'Source Serif 4', serif; line-height:1.6;
+}
+.hero-ctas{display:flex; gap:16px; margin-bottom:56px; flex-wrap:wrap;}
+.hero-meta{display:flex; gap:0; flex-wrap:wrap;}
+.hero-meta div{padding:0 32px; }
+.hero-meta div:first-child{padding-left:0;}
+.hero-meta .rule-v{padding-left:32px;}
+.hero-meta strong{
+  display:block; font-family:'Fraunces', serif; font-size:26px; font-weight:500; color:var(--green);
+  margin-bottom:4px;
+}
+.hero-meta span{font-size:13px; color:var(--cream-soft);}
+@media(max-width:560px){
+  .hero-meta div{padding:0 20px 20px 0 !important; border-left:none !important;}
+}
+
+.hero{background:linear-gradient(100deg,rgba(13,17,48,.95) 0%,rgba(20,24,58,.86) 48%,rgba(20,24,58,.62) 100%),url('assets/hero-bg.jpg') center/cover no-repeat,var(--navy);}
+/* ---- marquee ---- */
+.marquee{
+  background:var(--green); color:var(--navy);
+  overflow:hidden; white-space:nowrap; padding:14px 0;
+}
+.marquee-track{display:inline-block; padding-left:100%; animation:scroll 32s linear infinite;}
+.marquee-track span{
+  font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:500; letter-spacing:0.03em;
+  margin-right:36px;
+}
+@keyframes scroll{
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-100%);}
+}
+@media(prefers-reduced-motion: reduce){
+  .marquee-track{animation:none; padding-left:0;}
+}
+
+/* ---- section scaffolding ---- */
+section{padding:88px 0;}
+.head{max-width:44ch; margin-bottom:56px;}
+.head h2{font-size:36px; margin-bottom:14px;}
+.head p{color:var(--navy-soft); font-size:16px;}
+
+/* ---- features: editorial alternating list ---- */
+.features-rail{overflow:hidden;margin:0 -6vw;padding:0 6vw;}
+.feat-row{transform:translateX(-90px);opacity:0;transition:transform .8s cubic-bezier(.2,.75,.2,1),opacity .65s ease;will-change:transform,opacity;}
+.feat-row:nth-child(even){transform:translateX(90px);}
+.feat-row.is-visible,.feat-row:nth-child(even).is-visible{transform:translateX(0);opacity:1;}
+@media(prefers-reduced-motion:reduce){.feat-row,.feat-row:nth-child(even){transform:none;opacity:1;transition:none;}}
+.feat-row{
+  display:flex; gap:56px; padding:38px 0;
+  border-top:1px solid rgba(20,24,58,0.12);
+}
+.feat-row:last-child{border-bottom:1px solid rgba(20,24,58,0.12);}
+.feat-row:nth-child(even){flex-direction:row-reverse; text-align:right;}
+@media(max-width:700px){
+  .feat-row, .feat-row:nth-child(even){flex-direction:column; text-align:left; gap:12px;}
+}
+.feat-tag{
+  font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--green-deep);
+  font-weight:500; flex:0 0 110px; padding-top:6px;
+}
+.feat-row:nth-child(even) .feat-tag{text-align:right;}
+@media(max-width:700px){ .feat-row:nth-child(even) .feat-tag{text-align:left;} }
+.feat-body{flex:1;}
+.feat-body h3{font-size:22px; margin-bottom:10px; font-weight:500;}
+.feat-body p{font-size:15px; color:var(--navy-soft); max-width:52ch; line-height:1.6;}
+.feat-row:nth-child(even) .feat-body p{margin-left:auto;}
+
+/* ---- how it works: verb steps ---- */
+.steps{background:var(--navy); color:var(--cream);}
+.steps .head p{color:var(--cream-soft);}
+.steps .head h2{color:var(--cream);}
+.step-row{display:flex; flex-wrap:wrap;}
+.step{
+  flex:1; min-width:220px; padding:0 32px 24px 0;
+  border-left:1px solid rgba(247,243,233,0.18);
+  padding-left:32px;
+}
+.step:first-child{border-left:none; padding-left:0;}
+@media(max-width:760px){
+  .step{border-left:none; padding-left:0; border-top:1px solid rgba(247,243,233,0.18); padding-top:24px;}
+  .step:first-child{border-top:none; padding-top:0;}
+}
+.step h3{font-size:28px; color:var(--green); margin-bottom:14px; font-weight:500;}
+.step p{font-size:14.5px; color:var(--cream-soft); line-height:1.6;}
+
+/* ---- stats: flowing phrases ---- */
+.stats{background:var(--cream-dim);}
+.stat-flow{display:flex; flex-wrap:wrap; gap:0;}
+.stat-phrase{
+  padding:6px 34px 6px 0; margin-right:34px;
+  border-left:1px solid rgba(20,24,58,0.15); padding-left:34px;
+}
+.stat-phrase:first-child{border-left:none; padding-left:0;}
+@media(max-width:700px){
+  .stat-phrase{border-left:none; padding-left:0; margin-right:0; width:100%;}
+}
+.stat-phrase b{
+  font-family:'Fraunces', serif; font-size:30px; font-weight:500; color:var(--green-deep); margin-right:8px;
+}
+.stat-phrase{font-size:15px; color:var(--navy-soft);}
+
+/* ---- trust ---- */
+.trust-quote{max-width:64ch; margin-bottom:44px;}
+.trust-quote p{
+  font-family:'Source Serif 4', serif; font-size:25px; line-height:1.5; margin-bottom:18px; color:var(--navy);
+}
+.trust-quote cite{font-style:normal; font-size:13.5px; color:var(--navy-soft);}
+.org-flow{display:flex; flex-wrap:wrap;}
+.org-item{
+  font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--navy-soft);
+  padding:8px 26px 8px 0; margin-right:26px; border-left:1px solid rgba(20,24,58,0.15); padding-left:26px;
+}
+.org-item:first-child{border-left:none; padding-left:0;}
+@media(max-width:700px){ .org-item{border-left:none; padding-left:0; margin-right:0; width:100%;} }
+
+/* ---- CTA band ---- */
+.cta-band{background:var(--navy); color:var(--cream); padding:80px 0; text-align:center;}
+.cta-band h2{font-size:38px; max-width:20ch; margin:0 auto 32px; color:var(--cream);}
+.cta-band .btns{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+
+/* ---- footer ---- */
+footer{background:var(--navy); color:var(--cream-soft); padding:56px 0 30px; border-top:1px solid rgba(247,243,233,0.12);}
+.footer-top{
+  display:grid; grid-template-columns:1.4fr repeat(4, 1fr); gap:32px;
+  padding-bottom:44px;
+}
+@media(max-width:800px){ .footer-top{grid-template-columns:repeat(2,1fr);} }
+.footer-brand .logo{margin-bottom:14px; display:inline-block;}
+.footer-brand p{font-size:13.5px; max-width:30ch; line-height:1.6;}
+.footer-col h4{font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--cream-soft); margin-bottom:14px; font-weight:500; opacity:0.7;}
+.footer-col ul{list-style:none;}
+.footer-col li{margin-bottom:10px;}
+.footer-col a{text-decoration:none; font-size:14px; color:var(--cream);}
+.footer-col a:hover{color:var(--green);}
+.footer-bottom{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  padding-top:26px; border-top:1px solid rgba(247,243,233,0.12);
+  font-size:12.5px;
+}
+.badges{display:flex; gap:14px;}
+.badge{border:1px solid rgba(247,243,233,0.25); border-radius:4px; padding:5px 10px; font-family:'IBM Plex Mono', monospace; font-size:11px;}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap header-inner">
+<a class="logo" href="index.html">Pramaan<span>.</span></a>
+<nav>
+<ul>
+<li><a href="#features">Features</a></li>
+<li><a href="#how">How it works</a></li>
+<li><a href="#stats">Pricing</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+<div class="nav-actions">
+<a class="btn btn-ghost" href="login.html">Log in</a>
+<a class="btn btn-fill" href="register.html">Register</a>
+</div>
+</nav>
+</div>
+</header>
+<main>
+<section class="hero">
+<div class="wrap hero-grid">
+<div>
+<h1>Bid compliance, verified before it reaches your desk.</h1>
+<p class="dek">Pramaan checks every bidder's GST, PAN, Udyam, EPFO, ESIC and 11 other statutory records the moment documents are submitted — so procurement officers open a file that's already been read, not one waiting to be.</p>
+<div class="hero-ctas">
+<a class="btn btn-fill" href="register.html">Get started free</a>
+<a class="btn" href="#features">See how verification works</a>
+</div>
+<div class="hero-meta">
+<div><strong>80%</strong><span>Less time per tender</span></div>
+<div class="rule-v"><strong>15+</strong><span>Portals checked</span></div>
+<div class="rule-v"><strong>95%</strong><span>Document accuracy</span></div>
+</div>
+</div>
+<div class="hero-visual">
+<img alt="Digital procurement dashboard showing verified documents, compliance checks and tender activity" src="assets/procurement-hero.svg"/>
+<span class="visual-label">AI-assisted procurement verification</span>
+</div>
+</div>
+</section>
+<div class="marquee">
+<div class="marquee-track">
+<span>GST</span><span>PAN</span><span>UDYAM / MSME</span><span>EPFO</span><span>ESIC</span><span>MCA21</span><span>INCOME TAX</span><span>NSIC</span><span>STARTUP INDIA</span><span>BIS</span><span>MAKE IN INDIA</span><span>GEM BLACKLIST REGISTRY</span>
+<span>GST</span><span>PAN</span><span>UDYAM / MSME</span><span>EPFO</span><span>ESIC</span><span>MCA21</span><span>INCOME TAX</span><span>NSIC</span><span>STARTUP INDIA</span><span>BIS</span><span>MAKE IN INDIA</span><span>GEM BLACKLIST REGISTRY</span>
+</div>
+</div>
+<section id="features">
+<div class="wrap">
+<div class="head">
+<h2>Everything a verification desk used to do by hand.</h2>
+<p>Six checks that, together, replace the manual cross-referencing that turns bid evaluation into a two-week bottleneck.</p>
+</div>
+<div class="features-rail">
+<div class="feat-row">
+<div class="feat-tag">First</div>
+<div class="feat-body">
+<h3>Multi-portal integration</h3>
+<p>Udyam, GST, PAN, EPFO, ESIC and 10 more government portals queried in a single pass — no separate logins, no manual lookups.</p>
+</div>
+</div>
+<div class="feat-row">
+<div class="feat-tag">Second</div>
+<div class="feat-body">
+<h3>AI document verification</h3>
+<p>Bidder documents are read, extracted and cross-checked against portal data automatically, at 95% extraction accuracy.</p>
+</div>
+</div>
+<div class="feat-row">
+<div class="feat-tag">Third</div>
+<div class="feat-body">
+<h3>Compliance scoring</h3>
+<p>Every bidder gets a live composite score with a risk classification, so evaluators can triage instead of reading everything.</p>
+</div>
+</div>
+<div class="feat-row">
+<div class="feat-tag">Fourth</div>
+<div class="feat-body">
+<h3>Smart recommendations</h3>
+<p>A qualification recommendation with the reasoning behind it — never a verdict without the evidence that produced it.</p>
+</div>
+</div>
+<div class="feat-row">
+<div class="feat-tag">Fifth</div>
+<div class="feat-body">
+<h3>Complete audit trail</h3>
+<p>Every check, override and decision is logged and tamper-proof — built for the scrutiny government procurement actually gets.</p>
+</div>
+</div>
+<div class="feat-row">
+<div class="feat-tag">Sixth</div>
+<div class="feat-body">
+<h3>60–80% time saved</h3>
+<p>What took a verification officer two weeks of manual cross-referencing now runs in the background while bids are still open.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="steps" id="how">
+<div class="wrap">
+<div class="head">
+<h2>From tender to decision, in four moves.</h2>
+<p>The same flow whether it's a ₹5 lakh works order or a national-scale supply tender.</p>
+</div>
+<div class="step-row">
+<div class="step">
+<h3>Create</h3>
+<p>Set eligibility and statutory requirements once — turnover thresholds, MSME preference, Make in India content, whichever registrations apply.</p>
+</div>
+<div class="step">
+<h3>Submit</h3>
+<p>Vendors upload compliance documents against the tender's own checklist, with real-time validation as each file lands.</p>
+</div>
+<div class="step">
+<h3>Verify</h3>
+<p>Statutory records are checked across 15+ government portals the moment documents are submitted, not weeks later.</p>
+</div>
+<div class="step">
+<h3>Decide</h3>
+<p>Open a dashboard of compliance scores and risk flags, and qualify bidders with the reasoning already laid out.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="stats" id="stats">
+<div class="wrap">
+<div class="stat-flow">
+<div class="stat-phrase"><b>500+</b>tenders processed</div>
+<div class="stat-phrase"><b>10,000+</b>bidders verified</div>
+<div class="stat-phrase"><b>75%</b>average time saved</div>
+<div class="stat-phrase"><b>98%</b>compliance accuracy</div>
+</div>
+</div>
+</section>
+<section id="about">
+<div class="wrap">
+<div class="head" style="margin-bottom:44px;">
+<h2>Built alongside the officers who evaluate bids all day.</h2>
+<p>Every design decision was tested against an actual verification desk, not a demo account.</p>
+</div>
+<div class="trust-quote">
+<p>Pramaan didn't change how we evaluate bids — it changed how long it takes. What used to eat the first two weeks after a tender closed now happens while it's still open.</p>
+<cite>— Deputy General Manager, Procurement, a Central Public Sector Enterprise</cite>
+</div>
+<div class="org-flow">
+<div class="org-item">CPSE — Petroleum &amp; Refining</div>
+<div class="org-item">CPSE — Power Transmission</div>
+<div class="org-item">Ministry — Rural Development</div>
+<div class="org-item">State PSU — Infrastructure</div>
+<div class="org-item">CPSE — Shipping &amp; Ports</div>
+</div>
+</div>
+</section>
+<section class="cta-band" id="contact">
+<div class="wrap">
+<h2>Ready to see your next tender verified in real time?</h2>
+<div class="btns">
+<a class="btn btn-fill" href="register.html">Get started free</a>
+
+</div>
+</div>
+</section>
+</main>
+<footer>
+<div class="wrap">
+<div class="footer-top">
+<div class="footer-brand">
+<a class="logo" href="index.html">Pramaan<span>.</span></a>
+<p>Statutory compliance verification for GeM and public procurement, built for buyers and bidders alike.</p>
+</div>
+<div class="footer-col">
+<h4>Product</h4>
+<ul>
+<li><a href="#features">Features</a></li>
+<li><a href="#stats">Pricing</a></li>
+<li><a href="#">Documentation</a></li>
+<li><a href="#">API</a></li>
+<li><a href="#">Security</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Legal</h4>
+<ul>
+<li><a href="#">Privacy policy</a></li>
+<li><a href="#">Terms of service</a></li>
+<li><a href="#">Compliance</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Contact</h4>
+<ul>
+<li><a href="mailto:hello@pramaan.in">hello@pramaan.in</a></li>
+<li><a href="tel:+911140000000">+91 11 4000 0000</a></li>
+<li><a href="#">New Delhi, India</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Elsewhere</h4>
+<ul>
+<li><a href="#">LinkedIn</a></li>
+<li><a href="#">Twitter / X</a></li>
+<li><a href="#">YouTube</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© 2026 Pramaan Compliance Systems. All rights reserved.</span>
+<div class="badges">
+<span class="badge">ISO 27001</span>
+<span class="badge">GeM Empanelled</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+(function(){
+  const items=document.querySelectorAll('.feat-row');
+  if(!items.length) return;
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }});
+  },{threshold:.18,rootMargin:'0px 0px -8% 0px'});
+  items.forEach((el,i)=>{el.style.transitionDelay=(i*70)+'ms';observer.observe(el);});
+})();
+</script>
+<script id="pramaan-routing">
+(function(){
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const routes = {
+    'index.html': {
+      'Documentation':'help-support.html','API':'settings.html','Security':'settings.html','Privacy policy':'settings.html','Terms of service':'settings.html','Compliance':'compliance-reports.html'
+    },
+    'browse-tenders.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'my-bids.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'bid-detail.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'bidder-dashboard.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'tender-detail-bidder.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'submit-bid.html': {'Back':'tender-detail-bidder.html','Save as draft':'my-bids.html','Submit bid':'bid-detail.html'},
+    'buyer-dashboard.html': {'Dashboard':'buyer-dashboard.html','Tenders':'tender-list.html','Pending verification':'compliance-queue.html','Blacklisted':'bidders-list.html'},
+    'tender-list.html': {'Tenders':'tender-list.html','Bulk close':'tender-list.html','Export to Excel':'analytics.html','Download compliance report':'compliance-reports.html'},
+    'tender-detail.html': {'Tenders':'tender-list.html','Download document':'tenderdetail.html','Edit tender':'create-tender.html','View meeting link':'tenderdetail.html','Export list':'bidders-list.html','Submit decision':'compliance-details.html','Generate award letter':'tenderdetail.html','Download all (ZIP)':'compliance-details.html','Add response':'compliance-details.html','Download report':'compliance-reports.html'},
+    'tenderdetail.html': {'Tenders':'tender-list.html','Download document':'tenderdetail.html','Edit tender':'create-tender.html','View meeting link':'tenderdetail.html','Export list':'bidders-list.html','Submit decision':'compliance-details.html','Generate award letter':'tenderdetail.html','Download all (ZIP)':'compliance-details.html','Add response':'compliance-details.html','Download report':'compliance-reports.html'},
+    'compliance-queue.html': {'Bulk verify selected':'compliance-details.html'},
+    'compliance-reports.html': {'Bulk verify selected':'compliance-details.html'},
+    'compliance-details.html': {'Tenders':'tender-list.html','Qualify bidder':'compliance-reports.html','Seek clarification':'compliance-details.html#clarification','Disqualify':'compliance-reports.html','Download compliance report':'compliance-reports.html','Download bidder documents':'compliance-details.html','Download all (14)':'compliance-details.html'},
+    'compliance-detail.html': {'Tenders':'tender-list.html','Qualify bidder':'compliance-reports.html','Seek clarification':'compliance-detail.html#clarification','Disqualify':'compliance-reports.html','Download compliance report':'compliance-reports.html','Download bidder documents':'compliance-detail.html','Download all (14)':'compliance-detail.html'},
+    'bidders-list.html': {'Bidders':'bidders-list.html','All bidders':'bidders-list.html','Pending verification':'compliance-queue.html','Blacklisted':'bidders-list.html','Export list':'analytics.html'},
+    'bidder-profile.html': {'Bidders':'bidders-list.html','Message bidder':'notifications.html','Download profile':'bidder-profile.html','Blacklist bidder':'bidders-list.html'},
+    'analytics.html': {'Refresh data':'analytics.html','Export report':'compliance-reports.html','Generate report':'compliance-reports.html','+ New schedule':'settings.html'},
+    'notifications.html': {'Mark all as read':'notifications.html','Clear all':'notifications.html'},
+    'settings.html': {'Settings':'settings.html','Support':'help-support.html','Save changes':'settings.html','+ Add user':'settings.html','+ New template':'settings.html','Revoke':'settings.html','Edit':'settings.html'},
+    'help-support.html': {'Support':'help-support.html','Raise ticket':'help-support.html','Start live chat':'help-support.html'},
+    'create-tender.html': {'Tenders':'tender-list.html','Save as draft':'tender-list.html'},
+    'forgot-password.html': {'Send reset link':'login.html'},
+    'procurement-officer-dashboard.html': {'Tenders':'tender-list.html'}
+  }[page] || {};
+  document.querySelectorAll('a[href="#"]').forEach(a=>{
+    const t=a.textContent.replace(/\s+/g,' ').trim();
+    if(routes[t]) a.href=routes[t];
+  });
+  document.querySelectorAll('button').forEach(b=>{
+    const t=b.textContent.replace(/\s+/g,' ').trim();
+    if(routes[t]) { b.type='button'; b.addEventListener('click',()=>location.href=routes[t]); }
+  });
+  // Common action cards/links that are visually clickable but had no destination.
+  document.querySelectorAll('a:not([href]), button:not([onclick])').forEach(el=>{
+    const t=el.textContent.replace(/\s+/g,' ').trim();
+    if(!t || t==='Renew now' || t==='Upload document') return;
+    if(t==='View') { el.href = page.includes('bidder') ? 'bid-detail.html' : 'compliance-details.html'; }
+  });
+})();
+</script>
+<!-- PRAMAAN STICKY CHATBOT -->
+<style>
+#pramaan-chatbot{position:fixed;right:22px;bottom:22px;z-index:99999;font-family:inherit}
+#pramaan-chatbot .chat-toggle{width:58px;height:58px;border:0;border-radius:50%;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.22);background:#111827;color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center}
+#pramaan-chatbot .chat-panel{display:none;position:absolute;right:0;bottom:70px;width:340px;max-width:calc(100vw - 32px);height:430px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.2);overflow:hidden}
+#pramaan-chatbot.open .chat-panel{display:flex;flex-direction:column}
+#pramaan-chatbot .chat-head{padding:15px 16px;background:#111827;color:#fff;display:flex;align-items:center;justify-content:space-between}
+#pramaan-chatbot .chat-head strong{font-size:15px}
+#pramaan-chatbot .chat-head span{font-size:11px;opacity:.7}
+#pramaan-chatbot .chat-close{background:none;border:0;color:#fff;font-size:20px;cursor:pointer}
+#pramaan-chatbot .chat-body{flex:1;padding:14px;overflow:auto;background:#f8fafc}
+#pramaan-chatbot .msg{padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:13px;line-height:1.45;max-width:88%;background:#fff;border:1px solid #e5e7eb}
+#pramaan-chatbot .msg.bot{margin-right:auto}
+#pramaan-chatbot .msg.user{margin-left:auto;background:#111827;color:#fff;border-color:#111827}
+#pramaan-chatbot .chat-input{display:flex;padding:10px;border-top:1px solid #e5e7eb;background:#fff;gap:8px}
+#pramaan-chatbot input{flex:1;border:1px solid #d1d5db;border-radius:10px;padding:9px 10px;outline:none}
+#pramaan-chatbot .send{border:0;border-radius:10px;padding:0 14px;background:#111827;color:#fff;cursor:pointer}
+</style>
+<div id="pramaan-chatbot" aria-label="Pramaan Assistant">
+  <div class="chat-panel">
+    <div class="chat-head"><div><strong>Pramaan Assistant</strong><br><span>Procurement help</span></div><button class="chat-close" aria-label="Close">×</button></div>
+    <div class="chat-body"><div class="msg bot">Hello! I’m Pramaan Assistant. Ask me about tenders, bids, registration, compliance, or procurement workflows.</div></div>
+    <form class="chat-input"><input aria-label="Ask Pramaan Assistant" placeholder="Type your question…"><button class="send">Send</button></form>
+  </div>
+  <button class="chat-toggle" aria-label="Open Pramaan Assistant">💬</button>
+</div>
+<script>
+(function(){const root=document.getElementById('pramaan-chatbot');if(!root)return;const toggle=root.querySelector('.chat-toggle'),close=root.querySelector('.chat-close'),form=root.querySelector('.chat-input'),input=root.querySelector('input'),body=root.querySelector('.chat-body');toggle.onclick=()=>root.classList.toggle('open');close.onclick=()=>root.classList.remove('open');form.onsubmit=e=>{e.preventDefault();const q=input.value.trim();if(!q)return;body.insertAdjacentHTML('beforeend','<div class="msg user"></div><div class="msg bot">I can help with Pramaan’s procurement workflow. For this prototype, please use the relevant dashboard action or page for the requested task.</div>');body.lastElementChild.previousElementSibling.textContent=q;input.value='';body.scrollTop=body.scrollHeight;};})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/runtime-config.js"></script>
+<script src="assets/supabase.js"></script>
+</body>
+</html>

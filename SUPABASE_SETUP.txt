@@ -1,0 +1,9 @@
+PRAMAAN SUPABASE SETUP
+
+1. Open assets/supabase.js.
+2. Replace YOUR_SUPABASE_PROJECT_URL with the Project URL from your BIDDERS & TENDERS Supabase project.
+3. Replace YOUR_SUPABASE_PUBLISHABLE_KEY with the Publishable key from that same project.
+4. NEVER put a secret/service_role key in frontend files.
+5. The HTML pages already load the Supabase CDN and assets/supabase.js.
+6. Login uses Supabase Auth. Registration supports Bidder and Organization (Buyer).
+7. If email confirmation is enabled in Supabase, users must confirm their email before login.

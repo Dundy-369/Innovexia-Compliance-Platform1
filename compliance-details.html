@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sundaram Industrial Systems — Compliance — Pramaan</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#14183A; --navy-soft:#7178A6;
+  --cream:#F7F3E9; --cream-dim:#EEE7D6;
+  --ink:#22263F;
+  --line:rgba(20,24,58,0.10);
+  --green:#37B676; --green-deep:#279158; --green-bg:#DFF3E7;
+  --amber:#C98A2E; --amber-bg:#F5E9D3;
+  --red:#C1473A; --red-bg:#F5DEDA;
+  --white:#FFFFFF;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  background:var(--cream); color:var(--ink);
+  font-family:'IBM Plex Sans', sans-serif; font-size:14.5px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.01em; color:var(--navy);}
+a{color:inherit; text-decoration:none;}
+ul{list-style:none;}
+
+.app-shell{display:flex; min-height:100vh;}
+
+/* sidebar */
+.sidebar{width:250px; flex-shrink:0; background:var(--navy); color:#C7CBE4; display:flex; flex-direction:column; position:sticky; top:0; height:100vh;}
+.sb-logo{padding:26px 26px 22px; font-family:'Fraunces', serif; font-size:20px; font-weight:600; color:var(--cream);}
+.sb-logo span{color:var(--green);}
+.sb-nav{flex:1; overflow-y:auto; padding:6px 14px;}
+.sb-group{margin-bottom:4px;}
+.sb-link{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:6px; font-size:14px; color:#AFB6D6; border-left:2px solid transparent;}
+.sb-link:hover{color:var(--cream); background:rgba(247,243,233,0.06);}
+.sb-link.active{color:var(--cream); background:rgba(55,182,118,0.14); border-left-color:var(--green); font-weight:500;}
+.sb-dot{width:5px; height:5px; border-radius:50%; background:currentColor; opacity:0.5; flex-shrink:0;}
+.sb-sub{padding-left:24px; margin:2px 0 8px;}
+.sb-sub .sb-link{padding:7px 12px; font-size:13.5px; color:#8D95BC;}
+.sb-sub .sb-link.active{color:var(--green); background:none; border-left-color:transparent; font-weight:500;}
+.sb-foot{padding:18px 26px; border-top:1px solid rgba(247,243,233,0.1); font-size:12px; color:#8D95BC;}
+
+.main-col{flex:1; min-width:0;}
+.content{padding:28px 36px 60px; max-width:1360px;}
+
+.crumb{font-size:13px; color:var(--navy-soft); margin-bottom:18px;}
+.crumb a{color:var(--green-deep); font-weight:500;}
+
+/* header block */
+.t-header{background:var(--white); border:1px solid var(--line); border-radius:8px; padding:26px 30px; margin-bottom:20px;}
+.t-header-top{display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap;}
+.t-id{font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--navy-soft); margin-bottom:6px;}
+.t-header h1{font-size:25px; margin-bottom:12px; max-width:36ch;}
+.t-meta{display:flex; gap:0; flex-wrap:wrap; font-size:13px; color:var(--navy-soft);}
+.t-meta div{padding:0 20px; border-left:1px solid var(--line);}
+.t-meta div:first-child{padding-left:0; border-left:none;}
+.t-actions{display:flex; gap:10px; flex-wrap:wrap;}
+.btn{font-size:13.5px; font-weight:500; padding:9px 16px; border-radius:6px; border:1px solid var(--navy); color:var(--navy); cursor:pointer; display:inline-block; white-space:nowrap; background:transparent;}
+.btn-fill{background:var(--green); border-color:var(--green); color:var(--navy); font-weight:600;}
+.btn-outline-amber{border-color:var(--amber); color:var(--amber);}
+.btn-outline-red{border-color:var(--red); color:var(--red);}
+.pill{display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:500; padding:5px 12px; border-radius:20px;}
+.pill-dot{width:6px; height:6px; border-radius:50%; background:currentColor;}
+.pill-amber{background:var(--amber-bg); color:var(--amber);}
+.pill-green{background:var(--green-bg); color:var(--green-deep);}
+.pill-red{background:var(--red-bg); color:var(--red);}
+.pill-navy{background:rgba(20,24,58,0.07); color:var(--navy-soft);}
+
+/* score ring block in header */
+.score-block{display:flex; align-items:center; gap:16px; flex-shrink:0;}
+.score-ring{
+  width:78px; height:78px; border-radius:50%; flex-shrink:0;
+  background:conic-gradient(var(--green) 0% var(--pct,88%), var(--cream-dim) var(--pct,88%) 100%);
+  display:flex; align-items:center; justify-content:center;
+}
+.score-ring-inner{
+  width:60px; height:60px; border-radius:50%; background:var(--white);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.score-ring-inner .n{font-family:'IBM Plex Mono', monospace; font-size:16px; font-weight:500; color:var(--navy); line-height:1;}
+.score-ring-inner .u{font-size:9px; color:var(--navy-soft); margin-top:1px;}
+.score-block .lbl{font-size:12px; color:var(--navy-soft);}
+.score-block .lbl b{display:block; font-size:14px; color:var(--navy); font-family:'Fraunces', serif; font-weight:500;}
+
+/* tabs */
+.tabs-bar{display:flex; gap:4px; border-bottom:1px solid var(--line); margin-bottom:24px; overflow-x:auto;}
+.tab-btn{padding:12px 18px; font-size:13.5px; color:var(--navy-soft); cursor:pointer; white-space:nowrap; border-bottom:2px solid transparent; margin-bottom:-1px; background:none; border-top:none; border-left:none; border-right:none; font-family:'IBM Plex Sans';}
+.tab-btn:hover{color:var(--navy);}
+.tab-btn.active{color:var(--navy); font-weight:600; border-bottom-color:var(--green);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* panel */
+.panel{background:var(--white); border:1px solid var(--line); border-radius:8px; margin-bottom:20px;}
+.panel-head{display:flex; justify-content:space-between; align-items:center; padding:18px 24px; border-bottom:1px solid var(--line); gap:14px; flex-wrap:wrap;}
+.panel-head h2{font-size:16.5px;}
+.panel-head a, .panel-head .link{font-size:13px; color:var(--green-deep); font-weight:500;}
+.panel-body{padding:20px 24px;}
+
+.two-col{display:grid; grid-template-columns:1.3fr 0.7fr; gap:20px;}
+@media(max-width:980px){.two-col{grid-template-columns:1fr;}}
+
+/* mini stat grid */
+.stat-grid-sm{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:20px;}
+@media(max-width:900px){.stat-grid-sm{grid-template-columns:repeat(2,1fr);}}
+.stat-card-sm{background:var(--white); border:1px solid var(--line); border-left:3px solid var(--accent,var(--green)); border-radius:6px; padding:16px 18px;}
+.stat-card-sm .num{font-family:'IBM Plex Mono', monospace; font-size:22px; color:var(--navy);}
+.stat-card-sm .lbl{font-size:12px; color:var(--navy-soft); margin-top:4px;}
+
+/* table generic */
+table{width:100%; border-collapse:collapse;}
+th{text-align:left; font-size:12px; font-weight:500; color:var(--navy-soft); padding:12px 10px; border-bottom:2px solid var(--navy); white-space:nowrap;}
+td{padding:12px 10px; border-bottom:1px solid var(--line); font-size:13.5px; vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:rgba(20,24,58,0.02);}
+.mono{font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--navy-soft);}
+.tname{font-weight:500; color:var(--navy);}
+.link-action{color:var(--green-deep); font-weight:500; font-size:13px; margin-right:10px; cursor:pointer;}
+
+/* AI panel */
+.ai-note{background:var(--green-bg); border-radius:8px; padding:16px 18px; font-size:13.5px; color:var(--ink); margin-bottom:12px; line-height:1.6;}
+.ai-note b{color:var(--green-deep);}
+.ai-note.flag{background:var(--amber-bg);}
+.ai-note.flag b{color:var(--amber);}
+.ai-note.bad{background:var(--red-bg);}
+.ai-note.bad b{color:var(--red);}
+
+/* confidence meter */
+.conf-row{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+.conf-row .track{flex:1; height:8px; background:var(--cream-dim); border-radius:5px; overflow:hidden;}
+.conf-row .fill{height:100%; background:var(--navy); border-radius:5px;}
+.conf-row .val{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--navy); width:40px; text-align:right;}
+
+/* portal check cards */
+.check-card{border:1px solid var(--line); border-radius:8px; margin-bottom:16px; overflow:hidden;}
+.check-card:last-child{margin-bottom:0;}
+.check-top{display:flex; justify-content:space-between; align-items:center; padding:16px 20px; background:var(--cream); border-bottom:1px solid var(--line); gap:12px; flex-wrap:wrap;}
+.check-top .portal-name{font-family:'Fraunces', serif; font-size:16px; color:var(--navy); font-weight:500;}
+.check-top .portal-src{font-size:12px; color:var(--navy-soft); margin-top:2px;}
+.check-body{padding:18px 20px;}
+.compare-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 24px;}
+@media(max-width:760px){.compare-grid{grid-template-columns:1fr;}}
+.compare-col-head{font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--navy-soft); font-weight:500; padding-bottom:8px; border-bottom:1px solid var(--line); margin-bottom:10px;}
+.compare-field{display:flex; justify-content:space-between; gap:10px; padding:7px 0; font-size:13.5px;}
+.compare-field .k{color:var(--navy-soft);}
+.compare-field .v{font-weight:500; color:var(--ink); text-align:right;}
+.compare-field .v.mismatch{color:var(--red);}
+.compare-field .v.match{color:var(--green-deep);}
+.check-note{margin:16px 20px 18px; padding:12px 14px; border-radius:6px; font-size:13px; line-height:1.6;}
+.check-note.info{background:var(--cream-dim); color:var(--navy-soft);}
+.check-note.warn{background:var(--amber-bg); color:var(--ink);}
+.check-note.warn b{color:var(--amber);}
+.check-note.ok{background:var(--green-bg); color:var(--ink);}
+.check-note.ok b{color:var(--green-deep);}
+
+/* documents */
+.doc-link-row{display:flex; justify-content:space-between; align-items:center; padding:13px 0; border-bottom:1px solid var(--line); font-size:13.5px; gap:14px; flex-wrap:wrap;}
+.doc-link-row:last-child{border-bottom:none;}
+.doc-link-row .dname{font-weight:500; color:var(--navy); flex:1; min-width:180px;}
+.doc-link-row .dmeta{font-size:12px; color:var(--navy-soft);}
+.doc-link-row a{color:var(--green-deep); font-weight:500;}
+
+/* audit */
+.audit-row{display:grid; grid-template-columns:150px 140px 1fr; gap:14px; padding:11px 0; border-bottom:1px solid var(--line); font-size:13px;}
+.audit-row:last-child{border-bottom:none;}
+.audit-time{font-family:'IBM Plex Mono', monospace; color:var(--navy-soft); font-size:12px;}
+.audit-user{color:var(--navy); font-weight:500;}
+.audit-detail{color:var(--ink);}
+@media(max-width:700px){.audit-row{grid-template-columns:1fr; gap:2px;}}
+
+.crit-list li{font-size:13.5px; color:var(--ink); padding:8px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between;}
+.crit-list li:last-child{border-bottom:none;}
+.crit-list .k{color:var(--navy-soft);}
+.crit-list .v{font-weight:500;}
+</style>
+</head>
+<body>
+<div class="app-shell">
+<aside class="sidebar">
+<div class="sb-logo">Pramaan<span>.</span></div>
+<nav class="sb-nav">
+<div class="sb-group"><a class="sb-link" href="buyer-dashboard.html"><span class="sb-dot"></span>Dashboard</a></div>
+<div class="sb-group">
+<a class="sb-link active" href="#"><span class="sb-dot"></span>Tenders</a>
+<div class="sb-sub">
+<a class="sb-link" href="tender-list.html">All tenders</a>
+<a class="sb-link" href="create-tender.html">Create new</a>
+<a class="sb-link" href="tender-list.html">Draft tenders</a>
+</div>
+</div>
+<div class="sb-group"><a class="sb-link" href="bidder-profile.html"><span class="sb-dot"></span>Bidders</a></div>
+<div class="sb-group"><a class="sb-link" href="./compliance-reports.html"><span class="sb-dot"></span>Compliance reports</a></div>
+<div class="sb-group"><a class="sb-link" href="analytics.html"><span class="sb-dot"></span>Analytics</a></div>
+<div class="sb-group"><a class="sb-link" href="settings.html"><span class="sb-dot"></span>Settings</a></div>
+<div class="sb-group"></div>
+</nav>
+<div class="sb-foot">Chennai Petroleum Corp.<br/>Procurement Division</div>
+</aside>
+<div class="main-col">
+<div class="content">
+<div class="crumb"><a href="buyer-dashboard.html">Dashboard</a> / <a href="./tenderdetail.html">GEM/2026/B/44210</a> / Bidders / Sundaram Industrial Systems</div>
+<div class="t-header">
+<div class="t-header-top">
+<div>
+<div class="t-id">Compliance verification · GEM/2026/B/44210</div>
+<h1>Sundaram Industrial Systems</h1>
+<div style="margin-bottom:14px; display:flex; gap:8px; flex-wrap:wrap;">
+<span class="pill pill-green"><span class="pill-dot"></span>Low risk</span>
+<span class="pill pill-navy">14 / 15 documents</span>
+<span class="pill pill-navy">Bid submitted 02 Sep, 2:05 PM</span>
+</div>
+<div class="t-meta">
+<div>GSTIN 33AAFCS1234K1ZP</div>
+<div>PAN AAFCS1234K</div>
+<div>Chennai, Tamil Nadu</div>
+<div>Verified 04 Sep, 9:40 AM</div>
+</div>
+</div>
+<div class="score-block">
+<div class="score-ring" style="--pct:88%;"><div class="score-ring-inner"><span class="n">88%</span><span class="u">SCORE</span></div></div>
+<div class="lbl">Compliance<br/>rating<b>Qualify</b></div>
+</div>
+</div>
+<div class="t-actions" style="margin-top:18px;">
+<a class="btn btn-fill" href="#">Qualify bidder</a>
+<a class="btn btn-outline-amber" href="#">Seek clarification</a>
+<a class="btn btn-outline-red" href="#">Disqualify</a>
+<a class="btn" href="#">Download compliance report</a>
+</div>
+</div>
+<div class="tabs-bar" id="tabsBar">
+<button class="tab-btn active" data-tab="overview">Overview</button>
+<button class="tab-btn" data-tab="portals">Portal verification</button>
+<button class="tab-btn" data-tab="documents">Documents</button>
+<button class="tab-btn" data-tab="ai">AI discrepancy analysis</button>
+<button class="tab-btn" data-tab="audit">Verification history</button>
+</div>
+<!-- OVERVIEW -->
+<div class="tab-panel active" id="tab-overview">
+<div class="stat-grid-sm">
+<div class="stat-card-sm" style="--accent:#37B676;"><div class="num">88%</div><div class="lbl">Overall compliance score</div></div>
+<div class="stat-card-sm" style="--accent:#14183A;"><div class="num">5 / 5</div><div class="lbl">Statutory portals checked</div></div>
+<div class="stat-card-sm" style="--accent:#37B676;"><div class="num">14 / 15</div><div class="lbl">Documents verified</div></div>
+<div class="stat-card-sm" style="--accent:#C98A2E;"><div class="num">1</div><div class="lbl">Flag raised &amp; resolved</div></div>
+</div>
+<div class="two-col">
+<div>
+<div class="panel">
+<div class="panel-head"><h2>Compliance breakdown</h2></div>
+<div class="panel-body">
+<table>
+<thead><tr><th>Parameter</th><th>Portal checked</th><th>Result</th><th>Verified on</th></tr></thead>
+<tbody>
+<tr><td class="tname">GST registration</td><td class="mono">GST Network (GSTN)</td><td><span class="pill pill-green"><span class="pill-dot"></span>Matched</span></td><td>03 Sep, 11:12 AM</td></tr>
+<tr><td class="tname">PAN verification</td><td class="mono">Income Tax e-Filing</td><td><span class="pill pill-green"><span class="pill-dot"></span>Matched</span></td><td>03 Sep, 11:12 AM</td></tr>
+<tr><td class="tname">Udyam registration</td><td class="mono">MSME Udyam Portal</td><td><span class="pill pill-green"><span class="pill-dot"></span>Matched</span></td><td>03 Sep, 11:14 AM</td></tr>
+<tr><td class="tname">EPFO compliance</td><td class="mono">EPFO Employer Portal</td><td><span class="pill pill-green"><span class="pill-dot"></span>Resolved</span></td><td>04 Sep, 9:40 AM</td></tr>
+<tr><td class="tname">Make in India / local content</td><td class="mono">DPIIT Self-Certification</td><td><span class="pill pill-green"><span class="pill-dot"></span>Matched</span></td><td>03 Sep, 11:15 AM</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="panel">
+<div class="panel-head"><h2>Bid snapshot</h2></div>
+<div class="panel-body">
+<ul class="crit-list">
+<li><span class="k">Bid value</span><span class="v">₹4,82,40,000</span></li>
+<li><span class="k">Delivery period offered</span><span class="v">75 days</span></li>
+<li><span class="k">Submitted</span><span class="v">02 Sep 2026, 2:05 PM</span></li>
+<li><span class="k">Shortlisted for technical evaluation</span><span class="v">Yes</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div>
+<div class="panel">
+<div class="panel-head"><h2>Recommendation</h2></div>
+<div class="panel-body">
+<div class="ai-note"><b>Qualify:</b> All five statutory portals confirm the bidder's submitted credentials. One EPFO discrepancy was raised on first pass and cleared after the bidder's supplementary filing was checked against the portal record.</div>
+</div>
+</div>
+<div class="panel">
+<div class="panel-head"><h2>Risk factors</h2></div>
+<div class="panel-body">
+<ul class="crit-list">
+<li><span class="k">Litigation / blacklist record</span><span class="v">None found</span></li>
+<li><span class="k">Past GeM performance</span><span class="v">96% on-time (11 orders)</span></li>
+<li><span class="k">Document tampering signals</span><span class="v">None detected</span></li>
+<li><span class="k">Portal data freshness</span><span class="v">Checked within 24 hrs</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- PORTAL VERIFICATION -->
+<div class="tab-panel" id="tab-portals">
+<div class="check-card">
+<div class="check-top">
+<div><div class="portal-name">GST registration</div><div class="portal-src">Source: GST Network (GSTN) — live API lookup</div></div>
+<span class="pill pill-green"><span class="pill-dot"></span>Matched</span>
+</div>
+<div class="check-body">
+<div class="compare-grid">
+<div>
+<div class="compare-col-head">As submitted by bidder</div>
+<div class="compare-field"><span class="k">GSTIN</span><span class="v">33AAFCS1234K1ZP</span></div>
+<div class="compare-field"><span class="k">Legal name</span><span class="v">Sundaram Industrial Systems Pvt. Ltd.</span></div>
+<div class="compare-field"><span class="k">Registration status</span><span class="v">Active</span></div>
+</div>
+<div>
+<div class="compare-col-head">As verified on portal</div>
+<div class="compare-field"><span class="k">GSTIN</span><span class="v match">33AAFCS1234K1ZP</span></div>
+<div class="compare-field"><span class="k">Legal name</span><span class="v match">Sundaram Industrial Systems Pvt. Ltd.</span></div>
+<div class="compare-field"><span class="k">Registration status</span><span class="v match">Active</span></div>
+</div>
+</div>
+</div>
+<div class="check-note ok"><b>No discrepancy.</b> GSTIN, legal name and registration status match the GST Network record exactly.</div>
+</div>
+<div class="check-card">
+<div class="check-top">
+<div><div class="portal-name">PAN verification</div><div class="portal-src">Source: Income Tax e-Filing portal</div></div>
+<span class="pill pill-green"><span class="pill-dot"></span>Matched</span>
+</div>
+<div class="check-body">
+<div class="compare-grid">
+<div>
+<div class="compare-col-head">As submitted by bidder</div>
+<div class="compare-field"><span class="k">PAN</span><span class="v">AAFCS1234K</span></div>
+<div class="compare-field"><span class="k">Name on PAN</span><span class="v">Sundaram Industrial Systems Pvt. Ltd.</span></div>
+<div class="compare-field"><span class="k">PAN status</span><span class="v">Valid</span></div>
+</div>
+<div>
+<div class="compare-col-head">As verified on portal</div>
+<div class="compare-field"><span class="k">PAN</span><span class="v match">AAFCS1234K</span></div>
+<div class="compare-field"><span class="k">Name on PAN</span><span class="v match">Sundaram Industrial Systems Pvt. Ltd.</span></div>
+<div class="compare-field"><span class="k">PAN status</span><span class="v match">Valid</span></div>
+</div>
+</div>
+</div>
+<div class="check-note ok"><b>No discrepancy.</b> PAN maps to the same legal entity name declared on the GST record.</div>
+</div>
+<div class="check-card">
+<div class="check-top">
+<div><div class="portal-name">Udyam registration</div><div class="portal-src">Source: MSME Udyam Registration Portal</div></div>
+<span class="pill pill-green"><span class="pill-dot"></span>Matched</span>
+</div>
+<div class="check-body">
+<div class="compare-grid">
+<div>
+<div class="compare-col-head">As submitted by bidder</div>
+<div class="compare-field"><span class="k">Udyam number</span><span class="v">UDYAM-TN-03-0041289</span></div>
+<div class="compare-field"><span class="k">Enterprise category</span><span class="v">Small</span></div>
+<div class="compare-field"><span class="k">Linked PAN</span><span class="v">AAFCS1234K</span></div>
+</div>
+<div>
+<div class="compare-col-head">As verified on portal</div>
+<div class="compare-field"><span class="k">Udyam number</span><span class="v match">UDYAM-TN-03-0041289</span></div>
+<div class="compare-field"><span class="k">Enterprise category</span><span class="v match">Small</span></div>
+<div class="compare-field"><span class="k">Linked PAN</span><span class="v match">AAFCS1234K</span></div>
+</div>
+</div>
+</div>
+<div class="check-note ok"><b>No discrepancy.</b> Enterprise category qualifies for MSME purchase preference under this tender.</div>
+</div>
+<div class="check-card">
+<div class="check-top">
+<div><div class="portal-name">EPFO compliance</div><div class="portal-src">Source: EPFO Employer / Establishment Portal</div></div>
+<span class="pill pill-green"><span class="pill-dot"></span>Resolved</span>
+</div>
+<div class="check-body">
+<div class="compare-grid">
+<div>
+<div class="compare-col-head">As submitted by bidder</div>
+<div class="compare-field"><span class="k">Establishment code</span><span class="v">TN/CHN/0042117</span></div>
+<div class="compare-field"><span class="k">Latest remittance shown</span><span class="v">June 2026</span></div>
+<div class="compare-field"><span class="k">Employees covered</span><span class="v">212</span></div>
+</div>
+<div>
+<div class="compare-col-head">As verified on portal</div>
+<div class="compare-field"><span class="k">Establishment code</span><span class="v match">TN/CHN/0042117</span></div>
+<div class="compare-field"><span class="k">Latest remittance shown</span><span class="v mismatch">April 2026 (first pass)</span></div>
+<div class="compare-field"><span class="k">Employees covered</span><span class="v match">212</span></div>
+</div>
+</div>
+</div>
+<div class="check-note warn"><b>Flag raised, then resolved.</b> Initial portal pull on 03 Sep showed remittance current only through April 2026 — a two-month gap against the bidder's claim. The bidder's supplementary challan for May–June, filed 03 Sep after a portal sync delay, was checked directly against EPFO records on 04 Sep and matches. Coverage is current; no outstanding gap.</div>
+</div>
+<div class="check-card">
+<div class="check-top">
+<div><div class="portal-name">Make in India / local content</div><div class="portal-src">Source: DPIIT self-certification registry</div></div>
+<span class="pill pill-green"><span class="pill-dot"></span>Matched</span>
+</div>
+<div class="check-body">
+<div class="compare-grid">
+<div>
+<div class="compare-col-head">As submitted by bidder</div>
+<div class="compare-field"><span class="k">Local content declared</span><span class="v">62%</span></div>
+<div class="compare-field"><span class="k">Class</span><span class="v">Class I local supplier</span></div>
+</div>
+<div>
+<div class="compare-col-head">As verified on portal</div>
+<div class="compare-field"><span class="k">Local content declared</span><span class="v match">62%</span></div>
+<div class="compare-field"><span class="k">Class</span><span class="v match">Class I local supplier</span></div>
+</div>
+</div>
+</div>
+<div class="check-note ok"><b>No discrepancy.</b> Meets the 50% local content threshold required for this tender category.</div>
+</div>
+</div>
+<!-- BIDDER UPLOADED DOCUMENTS -->
+<div class="panel" style="margin-bottom:20px;">
+<div class="panel-head"><div><div style="font-size:16px;font-weight:700;color:var(--navy);">Bidder uploaded documents</div><div style="font-size:12px;color:var(--navy-soft);margin-top:4px;">Documents submitted by Sundaram Industrial Systems for compliance verification</div></div><span class="pill pill-navy">14 uploaded · 13 verified</span></div>
+<div class="panel-body">
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px;">
+<div class="stat-card-sm"><div class="num">14</div><div class="lbl">Files uploaded</div></div><div class="stat-card-sm"><div class="num">13</div><div class="lbl">Verified</div></div><div class="stat-card-sm"><div class="num">1</div><div class="lbl">Missing / optional</div></div><div class="stat-card-sm"><div class="num">02 Sep</div><div class="lbl">First upload</div></div>
+</div>
+<div style="border:1px solid var(--line);border-radius:12px;overflow:hidden;">
+<div style="display:grid;grid-template-columns:1.7fr .7fr .8fr .9fr .7fr;gap:10px;padding:11px 14px;background:#F7F8FC;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--navy-soft);"><span>Document</span><span>Type / size</span><span>Uploaded</span><span>Status</span><span>Action</span></div>
+<div class="doc-link-row"><span class="dname">GST registration certificate</span><span class="dmeta mono">PDF · 812 KB</span><span class="dmeta">02 Sep, 2:05 PM</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">PAN card</span><span class="dmeta mono">PDF · 240 KB</span><span class="dmeta">02 Sep, 2:05 PM</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Udyam registration certificate</span><span class="dmeta mono">PDF · 356 KB</span><span class="dmeta">02 Sep, 2:06 PM</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">EPFO remittance challan — May–June 2026</span><span class="dmeta mono">PDF · 190 KB</span><span class="dmeta">04 Sep, 8:15 AM</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Authorised signatory ID proof</span><span class="dmeta mono">PDF · 310 KB</span><span class="dmeta">02 Sep, 2:08 PM</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Power of attorney</span><span class="dmeta mono">PDF · 130 KB</span><span class="dmeta">02 Sep, 2:10 PM</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Factory license</span><span class="dmeta mono">Not submitted</span><span class="dmeta">—</span><span class="pill pill-amber"><span class="pill-dot"></span>Optional</span><span></span></div>
+</div>
+<div style="display:flex;gap:10px;align-items:center;margin-top:14px;"><a class="btn" href="#">Download bidder documents</a><span style="font-size:12px;color:var(--navy-soft);">Uploaded files are retained with the bidder submission and audit trail.</span></div>
+</div>
+</div>
+<!-- DOCUMENTS -->
+<div class="tab-panel" id="tab-documents">
+<div class="panel">
+<div class="panel-head"><h2>Submitted documents</h2><a href="#">Download all (14)</a></div>
+<div class="panel-body">
+<div class="doc-link-row"><span class="dname">GST registration certificate</span><span class="dmeta mono">PDF · 812 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">PAN card</span><span class="dmeta mono">PDF · 240 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Udyam registration certificate</span><span class="dmeta mono">PDF · 356 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">EPFO remittance challan — May–June 2026</span><span class="dmeta mono">PDF · 190 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Make in India / local content self-declaration</span><span class="dmeta mono">PDF · 145 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Certificate of incorporation</span><span class="dmeta mono">PDF · 402 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Cancelled cheque / bank mandate</span><span class="dmeta mono">PDF · 98 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Annual turnover statement (FY 25–26)</span><span class="dmeta mono">PDF · 620 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Experience certificates (3)</span><span class="dmeta mono">ZIP · 2.1 MB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Authorised signatory ID proof</span><span class="dmeta mono">PDF · 310 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Product technical datasheets</span><span class="dmeta mono">PDF · 1.4 MB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">ISO 9001 certification</span><span class="dmeta mono">PDF · 275 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">EMD payment proof</span><span class="dmeta mono">PDF · 88 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Power of attorney</span><span class="dmeta mono">PDF · 130 KB</span><span class="pill pill-green"><span class="pill-dot"></span>Verified</span><a href="#">View</a></div>
+<div class="doc-link-row"><span class="dname">Factory license</span><span class="dmeta mono">Not submitted</span><span class="pill pill-amber"><span class="pill-dot"></span>Missing (not mandatory for this category)</span><span></span></div>
+</div>
+</div>
+</div>
+<!-- AI ANALYSIS -->
+<div class="tab-panel" id="tab-ai">
+<div class="two-col">
+<div>
+<div class="panel">
+<div class="panel-head"><h2>AI discrepancy analysis</h2></div>
+<div class="panel-body">
+<div class="ai-note"><b>Cross-portal identity check:</b> Legal name, PAN and GSTIN are consistent across GSTN, Income Tax and Udyam records — no aliasing or shell-entity pattern detected.</div>
+<div class="ai-note flag"><b>EPFO timing gap (resolved):</b> The bidder's declared remittance month (June 2026) was two months ahead of the EPFO portal's first-pull record (April 2026). This class of gap is most often a portal sync lag rather than genuine non-compliance. The supplementary challan the bidder supplied was matched to EPFO's record on re-check, closing the gap.</div>
+<div class="ai-note"><b>Financial consistency:</b> Declared annual turnover is within the expected band for a Udyam "Small" enterprise and consistent with the bid value quoted, with no outlier variance flagged.</div>
+<div class="ai-note"><b>Historical pattern:</b> No prior instance of this bidder having a compliance flag on any of the 11 previous GeM contracts on record.</div>
+</div>
+</div>
+</div>
+<div>
+<div class="panel">
+<div class="panel-head"><h2>Model confidence</h2></div>
+<div class="panel-body">
+<div class="conf-row"><span style="font-size:12.5px; color:var(--navy-soft); width:110px;">Identity match</span><div class="track"><div class="fill" style="width:99%;"></div></div><span class="val">99%</span></div>
+<div class="conf-row"><span style="font-size:12.5px; color:var(--navy-soft); width:110px;">Document integrity</span><div class="track"><div class="fill" style="width:97%;"></div></div><span class="val">97%</span></div>
+<div class="conf-row"><span style="font-size:12.5px; color:var(--navy-soft); width:110px;">EPFO resolution</span><div class="track"><div class="fill" style="width:91%;"></div></div><span class="val">91%</span></div>
+<div class="conf-row"><span style="font-size:12.5px; color:var(--navy-soft); width:110px;">Overall</span><div class="track"><div class="fill" style="width:88%;"></div></div><span class="val">88%</span></div>
+</div>
+</div>
+<div class="panel">
+<div class="panel-head"><h2>Suggested action</h2></div>
+<div class="panel-body">
+<div class="ai-note"><b>Qualify.</b> No unresolved discrepancy remains across the five statutory checks. Recommend proceeding to technical evaluation.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- AUDIT -->
+<div class="tab-panel" id="tab-audit">
+<div class="panel">
+<div class="panel-head"><h2>Verification history</h2></div>
+<div class="panel-body">
+<div class="audit-row"><span class="audit-time">02 Sep, 2:05 PM</span><span class="audit-user">System</span><span class="audit-detail">Bid and supporting documents submitted by bidder.</span></div>
+<div class="audit-row"><span class="audit-time">03 Sep, 11:12 AM</span><span class="audit-user">Pramaan AI</span><span class="audit-detail">GST and PAN checks run against GSTN and Income Tax portals — both matched.</span></div>
+<div class="audit-row"><span class="audit-time">03 Sep, 11:14 AM</span><span class="audit-user">Pramaan AI</span><span class="audit-detail">Udyam registration checked against MSME portal — matched, enterprise category confirmed as Small.</span></div>
+<div class="audit-row"><span class="audit-time">03 Sep, 11:15 AM</span><span class="audit-user">Pramaan AI</span><span class="audit-detail">Make in India self-certification checked against DPIIT registry — matched.</span></div>
+<div class="audit-row"><span class="audit-time">03 Sep, 11:20 AM</span><span class="audit-user">Pramaan AI</span><span class="audit-detail">EPFO check flagged: portal remittance record two months behind bidder's declaration.</span></div>
+<div class="audit-row"><span class="audit-time">03 Sep, 4:48 PM</span><span class="audit-user">Ravi Menon</span><span class="audit-detail">Requested supplementary EPFO challan from bidder for May–June 2026.</span></div>
+<div class="audit-row"><span class="audit-time">04 Sep, 8:15 AM</span><span class="audit-user">Bidder</span><span class="audit-detail">Uploaded supplementary EPFO remittance challan.</span></div>
+<div class="audit-row"><span class="audit-time">04 Sep, 9:40 AM</span><span class="audit-user">Pramaan AI</span><span class="audit-detail">Re-verified EPFO record against supplementary challan — gap resolved, coverage current.</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+</script>
+<script id="pramaan-routing">
+(function(){
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const routes = {
+    'index.html': {
+      'Documentation':'help-support.html','API':'settings.html','Security':'settings.html','Privacy policy':'settings.html','Terms of service':'settings.html','Compliance':'compliance-reports.html'
+    },
+    'browse-tenders.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'my-bids.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'bid-detail.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'bidder-dashboard.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'tender-detail-bidder.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'submit-bid.html': {'Back':'tender-detail-bidder.html','Save as draft':'my-bids.html','Submit bid':'bid-detail.html'},
+    'buyer-dashboard.html': {'Dashboard':'buyer-dashboard.html','Tenders':'tender-list.html','Pending verification':'compliance-queue.html','Blacklisted':'bidders-list.html'},
+    'tender-list.html': {'Tenders':'tender-list.html','Bulk close':'tender-list.html','Export to Excel':'analytics.html','Download compliance report':'compliance-reports.html'},
+    'tender-detail.html': {'Tenders':'tender-list.html','Download document':'tenderdetail.html','Edit tender':'create-tender.html','View meeting link':'tenderdetail.html','Export list':'bidders-list.html','Submit decision':'compliance-details.html','Generate award letter':'tenderdetail.html','Download all (ZIP)':'compliance-details.html','Add response':'compliance-details.html','Download report':'compliance-reports.html'},
+    'tenderdetail.html': {'Tenders':'tender-list.html','Download document':'tenderdetail.html','Edit tender':'create-tender.html','View meeting link':'tenderdetail.html','Export list':'bidders-list.html','Submit decision':'compliance-details.html','Generate award letter':'tenderdetail.html','Download all (ZIP)':'compliance-details.html','Add response':'compliance-details.html','Download report':'compliance-reports.html'},
+    'compliance-queue.html': {'Bulk verify selected':'compliance-details.html'},
+    'compliance-reports.html': {'Bulk verify selected':'compliance-details.html'},
+    'compliance-details.html': {'Tenders':'tender-list.html','Qualify bidder':'compliance-reports.html','Seek clarification':'compliance-details.html#clarification','Disqualify':'compliance-reports.html','Download compliance report':'compliance-reports.html','Download bidder documents':'compliance-details.html','Download all (14)':'compliance-details.html'},
+    'compliance-detail.html': {'Tenders':'tender-list.html','Qualify bidder':'compliance-reports.html','Seek clarification':'compliance-detail.html#clarification','Disqualify':'compliance-reports.html','Download compliance report':'compliance-reports.html','Download bidder documents':'compliance-detail.html','Download all (14)':'compliance-detail.html'},
+    'bidders-list.html': {'Bidders':'bidders-list.html','All bidders':'bidders-list.html','Pending verification':'compliance-queue.html','Blacklisted':'bidders-list.html','Export list':'analytics.html'},
+    'bidder-profile.html': {'Bidders':'bidders-list.html','Message bidder':'notifications.html','Download profile':'bidder-profile.html','Blacklist bidder':'bidders-list.html'},
+    'analytics.html': {'Refresh data':'analytics.html','Export report':'compliance-reports.html','Generate report':'compliance-reports.html','+ New schedule':'settings.html'},
+    'notifications.html': {'Mark all as read':'notifications.html','Clear all':'notifications.html'},
+    'settings.html': {'Settings':'settings.html','Save changes':'settings.html','+ Add user':'settings.html','+ New template':'settings.html','Revoke':'settings.html','Edit':'settings.html'},
+    'help-support.html': {,'Raise ticket':'help-support.html','Start live chat':'help-support.html'},
+    'create-tender.html': {'Tenders':'tender-list.html','Save as draft':'tender-list.html'},
+    'forgot-password.html': {'Send reset link':'login.html'},
+    'procurement-officer-dashboard.html': {'Tenders':'tender-list.html'}
+  }[page] || {};
+  document.querySelectorAll('a[href="#"]').forEach(a=>{
+    const t=a.textContent.replace(/\s+/g,' ').trim();
+    if(routes[t]) a.href=routes[t];
+  });
+  document.querySelectorAll('button').forEach(b=>{
+    const t=b.textContent.replace(/\s+/g,' ').trim();
+    if(routes[t]) { b.type='button'; b.addEventListener('click',()=>location.href=routes[t]); }
+  });
+  // Common action cards/links that are visually clickable but had no destination.
+  document.querySelectorAll('a:not([href]), button:not([onclick])').forEach(el=>{
+    const t=el.textContent.replace(/\s+/g,' ').trim();
+    if(!t || t==='Renew now' || t==='Upload document') return;
+    if(t==='View') { el.href = page.includes('bidder') ? 'bid-detail.html' : 'compliance-details.html'; }
+  });
+})();
+</script>
+<!-- PRAMAAN STICKY CHATBOT -->
+<style>
+#pramaan-chatbot{position:fixed;right:22px;bottom:22px;z-index:99999;font-family:inherit}
+#pramaan-chatbot .chat-toggle{width:58px;height:58px;border:0;border-radius:50%;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.22);background:#111827;color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center}
+#pramaan-chatbot .chat-panel{display:none;position:absolute;right:0;bottom:70px;width:340px;max-width:calc(100vw - 32px);height:430px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.2);overflow:hidden}
+#pramaan-chatbot.open .chat-panel{display:flex;flex-direction:column}
+#pramaan-chatbot .chat-head{padding:15px 16px;background:#111827;color:#fff;display:flex;align-items:center;justify-content:space-between}
+#pramaan-chatbot .chat-head strong{font-size:15px}
+#pramaan-chatbot .chat-head span{font-size:11px;opacity:.7}
+#pramaan-chatbot .chat-close{background:none;border:0;color:#fff;font-size:20px;cursor:pointer}
+#pramaan-chatbot .chat-body{flex:1;padding:14px;overflow:auto;background:#f8fafc}
+#pramaan-chatbot .msg{padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:13px;line-height:1.45;max-width:88%;background:#fff;border:1px solid #e5e7eb}
+#pramaan-chatbot .msg.bot{margin-right:auto}
+#pramaan-chatbot .msg.user{margin-left:auto;background:#111827;color:#fff;border-color:#111827}
+#pramaan-chatbot .chat-input{display:flex;padding:10px;border-top:1px solid #e5e7eb;background:#fff;gap:8px}
+#pramaan-chatbot input{flex:1;border:1px solid #d1d5db;border-radius:10px;padding:9px 10px;outline:none}
+#pramaan-chatbot .send{border:0;border-radius:10px;padding:0 14px;background:#111827;color:#fff;cursor:pointer}
+</style>
+<div id="pramaan-chatbot" aria-label="Pramaan Assistant">
+  <div class="chat-panel">
+    <div class="chat-head"><div><strong>Pramaan Assistant</strong><br><span>Procurement help</span></div><button class="chat-close" aria-label="Close">×</button></div>
+    <div class="chat-body"><div class="msg bot">Hello! I’m Pramaan Assistant. Ask me about tenders, bids, registration, compliance, or procurement workflows.</div></div>
+    <form class="chat-input"><input aria-label="Ask Pramaan Assistant" placeholder="Type your question…"><button class="send">Send</button></form>
+  </div>
+  <button class="chat-toggle" aria-label="Open Pramaan Assistant">💬</button>
+</div>
+<script>
+(function(){const root=document.getElementById('pramaan-chatbot');if(!root)return;const toggle=root.querySelector('.chat-toggle'),close=root.querySelector('.chat-close'),form=root.querySelector('.chat-input'),input=root.querySelector('input'),body=root.querySelector('.chat-body');toggle.onclick=()=>root.classList.toggle('open');close.onclick=()=>root.classList.remove('open');form.onsubmit=e=>{e.preventDefault();const q=input.value.trim();if(!q)return;body.insertAdjacentHTML('beforeend','<div class="msg user"></div><div class="msg bot">I can help with Pramaan’s procurement workflow. For this prototype, please use the relevant dashboard action or page for the requested task.</div>');body.lastElementChild.previousElementSibling.textContent=q;input.value='';body.scrollTop=body.scrollHeight;};})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/runtime-config.js"></script>
+<script src="assets/supabase.js"></script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Register — Pramaan</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#14183A;
+  --navy-soft:#7178A6;
+  --cream:#F7F3E9;
+  --cream-dim:#EEE7D6;
+  --cream-soft:#C7CBE4;
+  --green:#37B676;
+  --green-deep:#279158;
+  --white:#FFFFFF;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  background:var(--cream); color:var(--navy);
+  font-family:'IBM Plex Sans', sans-serif; font-size:16px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.01em;}
+a{color:inherit;}
+.wrap{max-width:760px; margin:0 auto; padding:0 32px;}
+@media(max-width:640px){.wrap{padding:0 22px;}}
+
+/* header */
+header{background:var(--navy); color:var(--cream);}
+.header-inner{max-width:1160px; margin:0 auto; padding:22px 32px; display:flex; align-items:center; justify-content:space-between;}
+@media(max-width:640px){.header-inner{padding:22px;}}
+.logo{font-family:'Fraunces', serif; font-size:21px; font-weight:600; text-decoration:none; color:var(--cream);}
+.logo span{color:var(--green);}
+.header-actions{display:flex; align-items:center; gap:18px; font-size:14px;}
+.header-actions a{text-decoration:none; color:var(--cream-soft);}
+.header-actions a:hover{color:var(--cream);}
+.btn{
+  font-family:'IBM Plex Sans', sans-serif; font-size:14px; font-weight:500;
+  padding:10px 20px; border:1px solid var(--cream); border-radius:5px;
+  background:transparent; color:var(--cream); cursor:pointer; text-decoration:none; display:inline-block;
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:0.85;}
+.btn-fill{background:var(--green); color:var(--navy); border-color:var(--green); font-weight:600;}
+.btn-block{width:100%; text-align:center;}
+.btn-dark{border-color:rgba(20,24,58,0.3); color:var(--navy);}
+
+/* intro band */
+.intro{background:var(--navy); color:var(--cream); padding:64px 0 56px;}
+.intro h1{font-size:40px; max-width:16ch; margin-bottom:16px;}
+.intro p{font-family:'Source Serif 4', serif; font-size:17px; color:var(--cream-soft); max-width:48ch; line-height:1.6; margin-bottom:40px;}
+
+/* account type tabs (CSS only) */
+.type-tabs{display:flex; gap:0; border:1px solid rgba(247,243,233,0.3); border-radius:8px; overflow:hidden; max-width:520px;}
+.type-radio{display:none;}
+.type-label{
+  flex:1; text-align:center; padding:16px 18px; cursor:pointer; font-size:14.5px; font-weight:500;
+  color:var(--cream-soft); transition:background .15s ease, color .15s ease;
+}
+.type-label small{display:block; font-weight:400; font-size:12px; color:var(--cream-soft); margin-top:3px; opacity:0.75;}
+.type-radio:checked + .type-label{background:var(--green); color:var(--navy);}
+.type-radio:checked + .type-label small{color:var(--navy); opacity:0.7;}
+
+/* form area */
+.form-section{padding:56px 0;}
+.field-group{display:none;}
+.type-radio#type-org:checked ~ .form-section #org-fields{display:block;}
+.type-radio#type-bidder:checked ~ .form-section #bidder-fields{display:block;}
+
+.block{margin-bottom:52px;}
+.block h3{font-size:19px; margin-bottom:6px;}
+.block .block-sub{font-size:13.5px; color:var(--navy-soft); margin-bottom:26px;}
+
+.fields-2col{display:grid; grid-template-columns:1fr 1fr; gap:0 32px;}
+@media(max-width:600px){.fields-2col{grid-template-columns:1fr;}}
+
+.field{margin-bottom:22px;}
+.field label{display:block; font-size:13px; color:var(--navy-soft); margin-bottom:7px;}
+.field input, .field select{
+  width:100%; border:none; border-bottom:1px solid rgba(20,24,58,0.25);
+  background:transparent; padding:8px 0; font-size:15px; font-family:'IBM Plex Sans', sans-serif; color:var(--navy);
+  appearance:none; -webkit-appearance:none; border-radius:0;
+}
+.field select{
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%237178A6' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat:no-repeat; background-position:right 4px center; padding-right:20px;
+}
+.field input:focus, .field select:focus{outline:none; border-bottom-color:var(--green);}
+.field input::placeholder{color:rgba(20,24,58,0.32);}
+.field.full{grid-column:1 / -1;}
+
+/* upload rows */
+.upload-row{
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  padding:16px 0; border-bottom:1px dashed rgba(20,24,58,0.28);
+}
+.upload-row .u-name{font-size:14.5px; font-weight:500;}
+.upload-row .u-hint{font-size:12px; color:var(--navy-soft); margin-top:2px;}
+.upload-row input[type=file]{display:none;}
+.upload-row .upload-btn{
+  font-size:12.5px; color:var(--green-deep); border:1px solid var(--green-deep); border-radius:5px;
+  padding:8px 14px; cursor:pointer; white-space:nowrap;
+}
+
+.declare{display:flex; gap:10px; font-size:13.5px; color:var(--navy-soft); margin-bottom:16px; align-items:flex-start;}
+.declare input{accent-color:var(--green); margin-top:3px;}
+
+.foot-links{margin-top:36px; text-align:center; font-size:13.5px; color:var(--navy-soft);}
+.foot-links a{color:var(--green-deep); text-decoration:none; font-weight:500;}
+.foot-links a:hover{text-decoration:underline;}
+ 
+#officer-fields{display:none}
+</style>
+</head>
+<body>
+<header>
+<div class="header-inner">
+<a class="logo" href="index.html">Pramaan<span>.</span></a>
+<div class="header-actions">
+<span>Already registered?</span>
+<a class="btn" href="login.html">Log in</a>
+</div>
+</div>
+</header>
+<input checked="" class="type-radio" id="type-org" name="acct-type" type="radio"/>
+<input class="type-radio" id="type-bidder" name="acct-type" type="radio"/>
+<input class="type-radio" id="type-officer" name="acct-type" type="radio"/>
+<section class="intro">
+<div class="wrap">
+<h1>Set up your account.</h1>
+<p>Most of what you enter here gets verified automatically the moment you submit it — you won't need to prove it twice.</p>
+<div class="type-tabs">
+<label class="type-label" for="type-org">Organization<small>Buyer / CPSE</small></label>
+<label class="type-label" for="type-bidder">Bidder<small>Seller / Vendor</small></label>
+<label class="type-label" for="type-officer">Procurement Officer<small>Verified Government User</small></label>
+</div>
+</div>
+</section>
+<div class="form-section">
+<div class="wrap">
+<!-- ORGANIZATION FIELDS -->
+<div class="field-group" id="org-fields">
+<div class="block">
+<h3>Organization details</h3>
+<p class="block-sub">This is what bidders will see as the publishing authority on your tenders.</p>
+<div class="fields-2col">
+<div class="field"><label>Organization name</label><input placeholder="e.g. Chennai Petroleum Corporation Ltd." type="text"/></div>
+<div class="field">
+<label>Organization type</label>
+<select><option>CPSE</option><option>Ministry</option><option>Department</option><option>PSU</option></select>
+</div>
+<div class="field"><label>GST number</label><input placeholder="22AAAAA0000A1Z5" type="text"/></div>
+<div class="field"><label>PAN number</label><input placeholder="AAAAA0000A" type="text"/></div>
+<div class="field"><label>Official email</label><input placeholder="procurement@organization.gov.in" type="email"/></div>
+<div class="field"><label>Phone number</label><input placeholder="+91" type="tel"/></div>
+<div class="field full"><label>Registered address</label><input placeholder="Street, city, state, PIN" type="text"/></div>
+</div>
+</div>
+<div class="block">
+<h3>Admin user details</h3>
+<p class="block-sub">The person who'll manage tenders and users on this account.</p>
+<div class="fields-2col">
+<div class="field"><label>Full name</label><input type="text"/></div>
+<div class="field"><label>Designation</label><input placeholder="e.g. Deputy Manager, Procurement" type="text"/></div>
+<div class="field"><label>Email</label><input type="email"/></div>
+<div class="field"><label>Phone</label><input type="tel"/></div>
+<div class="field"><label>Password</label><input type="password"/></div>
+<div class="field"><label>Confirm password</label><input type="password"/></div>
+</div>
+</div>
+</div>
+<!-- BIDDER FIELDS -->
+<div class="field-group" id="bidder-fields">
+<div class="block">
+<h3>Company details</h3>
+<p class="block-sub">This is what buyers will see when they review your bids.</p>
+<div class="fields-2col">
+<div class="field"><label>Company name</label><input type="text"/></div>
+<div class="field">
+<label>Business type</label>
+<select><option>Manufacturer</option><option>Supplier</option><option>Service provider</option><option>OEM</option></select>
+</div>
+<div class="field"><label>GST number</label><input placeholder="22AAAAA0000A1Z5" type="text"/></div>
+<div class="field"><label>PAN number</label><input placeholder="AAAAA0000A" type="text"/></div>
+<div class="field"><label>Udyam registration number</label><input placeholder="UDYAM-XX-00-0000000" type="text"/></div>
+<div class="field"><label>Annual business turnover</label><select><option value="">Select turnover range</option><option>Below ₹10 Lakh</option><option>₹10 Lakh – ₹50 Lakh</option><option>₹50 Lakh – ₹1 Crore</option><option>₹1 Crore – ₹5 Crore</option><option>₹5 Crore – ₹25 Crore</option><option>Above ₹25 Crore</option></select></div>
+<div class="field"><label>Company experience</label><select><option value="">Select experience</option><option>Less than 1 year</option><option>1 – 3 years</option><option>3 – 5 years</option><option>5 – 10 years</option><option>10 – 15 years</option><option>More than 15 years</option></select></div>
+<div class="field"><label>Official email</label><input type="email"/></div>
+<div class="field"><label>Phone number</label><input placeholder="+91" type="tel"/></div>
+<div class="field full"><label>Business address</label><input placeholder="Street, city, state, PIN" type="text"/></div>
+</div>
+</div>
+<div class="block">
+<h3>Primary contact person</h3>
+<p class="block-sub">Who we'll reach for anything related to your bids and compliance status.</p>
+<div class="fields-2col">
+<div class="field"><label>Full name</label><input type="text"/></div>
+<div class="field"><label>Designation</label><input type="text"/></div>
+<div class="field"><label>Email</label><input type="email"/></div>
+<div class="field"><label>Phone</label><input type="tel"/></div>
+<div class="field"><label>Password</label><input type="password"/></div>
+<div class="field"><label>Confirm password</label><input type="password"/></div>
+</div>
+</div>
+</div>
+<!-- PROCUREMENT OFFICER FIELDS -->
+<div class="field-group" id="officer-fields">
+<div class="block">
+<h3>1. Personal details</h3>
+<p class="block-sub">These details are used to verify the individual officer account.</p>
+<div class="fields-2col">
+<div class="field"><label>Full Name</label><input placeholder="Full legal name" type="text"/></div>
+<div class="field"><label>Official Government Email</label><input placeholder="name@department.gov.in" type="email"/></div>
+<div class="field"><label>Mobile Number</label><input placeholder="+91" type="tel"/></div>
+<div class="field"><label>Employee / Officer ID</label><input placeholder="Official employee ID" type="text"/></div>
+<div class="field"><label>Designation</label><input placeholder="e.g. Procurement Officer" type="text"/></div>
+</div>
+</div>
+<div class="block">
+<h3>2. Organization details</h3>
+<div class="fields-2col">
+<div class="field"><label>Department / Ministry / Organization</label><input type="text"/></div>
+<div class="field"><label>Organization Type</label><select><option>Central Government</option><option>State Government</option><option>PSU / CPSE</option><option>Autonomous Body</option><option>Local Government</option></select></div>
+<div class="field"><label>Office / Division</label><input type="text"/></div>
+<div class="field"><label>Office Location</label><input placeholder="City, State, PIN" type="text"/></div>
+</div>
+</div>
+<div class="block">
+<h3>3. Procurement role</h3>
+<div class="fields-2col">
+<div class="field"><label>Role</label><input readonly="" type="text" value="Procurement Officer"/></div>
+<div class="field"><label>Procurement Authority / Role Level</label><select><option>Officer</option><option>Section / Department Level</option><option>Divisional Level</option><option>Head of Procurement</option></select></div>
+<div class="field full"><label>Areas of Procurement / Categories</label><input placeholder="Goods, services, works, IT, medical, etc." type="text"/></div>
+<div class="field full"><label>Approval Authority, if applicable</label><input placeholder="Delegated financial / procurement authority" type="text"/></div>
+</div>
+</div>
+<div class="block">
+<h3>Officer verification documents</h3>
+<p class="block-sub">Upload clear PDF or image copies. These documents can be reviewed before the account is activated.</p>
+<div class="upload-row"><div><div class="u-name">Official Government / Organization ID Card</div><div class="u-hint">Required</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="upload-row"><div><div class="u-name">Appointment / Employment Certificate</div><div class="u-hint">Required</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="upload-row"><div><div class="u-name">Official Government Email proof</div><div class="u-hint">Required</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="upload-row"><div><div class="u-name">Department / Organization Proof</div><div class="u-hint">Required</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="upload-row"><div><div class="u-name">Procurement Authority / Delegation Order</div><div class="u-hint">If applicable / required for role</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="upload-row"><div><div class="u-name">Digital Signature Certificate (DSC)</div><div class="u-hint">Required for applicable workflows</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="upload-row"><div><div class="u-name">Office ID / Employee Number proof</div><div class="u-hint">Required</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+</div>
+</div>
+<!-- DOCUMENT UPLOAD (shared) -->
+<div class="block" id="shared-documents">
+<h3>Documents</h3>
+<p class="block-sub">PDF or image, up to 5MB each. You can also add these later from your profile.</p>
+<div class="upload-row">
+<div><div class="u-name">GST certificate</div><div class="u-hint">Not uploaded</div></div>
+<label class="upload-btn">Choose file<input type="file"/></label>
+</div>
+<div class="upload-row">
+<div><div class="u-name">PAN card</div><div class="u-hint">Not uploaded</div></div>
+<label class="upload-btn">Choose file<input type="file"/></label>
+</div>
+<div class="upload-row">
+<div><div class="u-name">Udyam / MSME certificate</div><div class="u-hint">Not uploaded</div></div>
+<label class="upload-btn">Choose file<input type="file"/></label>
+</div>
+<div class="upload-row">
+<div><div class="u-name">Company registration certificate</div><div class="u-hint">Not uploaded</div></div>
+<label class="upload-btn">Choose file<input type="file"/></label>
+</div>
+<div class="upload-row">
+<div><div class="u-name">Authorized signatory ID proof</div><div class="u-hint">Not uploaded</div></div>
+<label class="upload-btn">Choose file<input type="file"/></label>
+</div>
+</div>
+<div class="block" style="margin-bottom:8px;">
+<label class="declare"><input type="checkbox"/>I confirm the information provided is accurate, and I'm authorized to register this organization on Pramaan.</label>
+</div>
+<a class="btn btn-fill btn-block" href="#" onclick="routeRegister(); return false;">Create account</a>
+<div class="foot-links">Already have an account? <a href="login.html">Log in</a></div>
+</div>
+</div>
+<script>
+function syncAccountType(){
+  var type=document.querySelector('input[name="acct-type"]:checked').id;
+  document.getElementById('org-fields').style.display=type==='type-org'?'block':'none';
+  document.getElementById('bidder-fields').style.display=type==='type-bidder'?'block':'none';
+  document.getElementById('officer-fields').style.display=type==='type-officer'?'block':'none';
+  document.getElementById('shared-documents').style.display=type==='type-officer'?'none':'block';
+  document.querySelector('.form-section .block[style*="margin-bottom"]')?.style.setProperty('display',type==='type-officer'?'none':'block');
+}
+document.querySelectorAll('input[name="acct-type"]').forEach(r=>r.addEventListener('change',syncAccountType));
+syncAccountType();
+async function routeRegister(){
+  if(!window.supabaseClient){ alert('Supabase is not configured. Check assets/supabase.js.'); return false; }
+  var type=document.querySelector('input[name="acct-type"]:checked').id;
+  var group=document.getElementById(type==='type-org'?'org-fields':type==='type-bidder'?'bidder-fields':'officer-fields');
+  if(type==='type-officer'){
+    alert('Procurement Officer registration needs a password field in this prototype. Register as Bidder or Organization for now.');
+    return false;
+  }
+  var emails=Array.from(group.querySelectorAll('input[type="email"]'));
+  var passwords=Array.from(group.querySelectorAll('input[type="password"]'));
+  var email=(emails[emails.length-1]?.value||'').trim();
+  var password=passwords[0]?.value||'';
+  var confirm=passwords[1]?.value||'';
+  if(!email || !password){ alert('Please enter email and password.'); return false; }
+  if(password!==confirm){ alert('Passwords do not match.'); return false; }
+  if(password.length<6){ alert('Password must be at least 6 characters.'); return false; }
+  var { data, error } = await window.supabaseClient.auth.signUp({
+    email,
+    password,
+    options:{ data:{ role:type==='type-org'?'buyer':'bidder', account_type:type } }
+  });
+  if(error){ alert('Registration failed: '+error.message); return false; }
+  if(data.session){
+    window.location.href = type==='type-org' ? 'buyer-dashboard.html' : 'bidder-dashboard.html';
+  } else {
+    alert('Account created. Check your email if Supabase email confirmation is enabled, then log in.');
+    window.location.href='login.html';
+  }
+  return false;
+}
+</script>
+<script id="pramaan-routing">
+(function(){
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const routes = {
+    'index.html': {
+      'Documentation':'help-support.html','API':'settings.html','Security':'settings.html','Privacy policy':'settings.html','Terms of service':'settings.html','Compliance':'compliance-reports.html'
+    },
+    'browse-tenders.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'my-bids.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'bid-detail.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'bidder-dashboard.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'tender-detail-bidder.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'submit-bid.html': {'Back':'tender-detail-bidder.html','Save as draft':'my-bids.html','Submit bid':'bid-detail.html'},
+    'buyer-dashboard.html': {'Dashboard':'buyer-dashboard.html','Tenders':'tender-list.html','Pending verification':'compliance-queue.html','Blacklisted':'bidders-list.html'},
+    'tender-list.html': {'Tenders':'tender-list.html','Bulk close':'tender-list.html','Export to Excel':'analytics.html','Download compliance report':'compliance-reports.html'},
+    'tender-detail.html': {'Tenders':'tender-list.html','Download document':'tenderdetail.html','Edit tender':'create-tender.html','View meeting link':'tenderdetail.html','Export list':'bidders-list.html','Submit decision':'compliance-details.html','Generate award letter':'tenderdetail.html','Download all (ZIP)':'compliance-details.html','Add response':'compliance-details.html','Download report':'compliance-reports.html'},
+    'tenderdetail.html': {'Tenders':'tender-list.html','Download document':'tenderdetail.html','Edit tender':'create-tender.html','View meeting link':'tenderdetail.html','Export list':'bidders-list.html','Submit decision':'compliance-details.html','Generate award letter':'tenderdetail.html','Download all (ZIP)':'compliance-details.html','Add response':'compliance-details.html','Download report':'compliance-reports.html'},
+    'compliance-queue.html': {'Bulk verify selected':'compliance-details.html'},
+    'compliance-reports.html': {'Bulk verify selected':'compliance-details.html'},
+    'compliance-details.html': {'Tenders':'tender-list.html','Qualify bidder':'compliance-reports.html','Seek clarification':'compliance-details.html#clarification','Disqualify':'compliance-reports.html','Download compliance report':'compliance-reports.html','Download bidder documents':'compliance-details.html','Download all (14)':'compliance-details.html'},
+    'compliance-detail.html': {'Tenders':'tender-list.html','Qualify bidder':'compliance-reports.html','Seek clarification':'compliance-detail.html#clarification','Disqualify':'compliance-reports.html','Download compliance report':'compliance-reports.html','Download bidder documents':'compliance-detail.html','Download all (14)':'compliance-detail.html'},
+    'bidders-list.html': {'Bidders':'bidders-list.html','All bidders':'bidders-list.html','Pending verification':'compliance-queue.html','Blacklisted':'bidders-list.html','Export list':'analytics.html'},
+    'bidder-profile.html': {'Bidders':'bidders-list.html','Message bidder':'notifications.html','Download profile':'bidder-profile.html','Blacklist bidder':'bidders-list.html'},
+    'analytics.html': {'Refresh data':'analytics.html','Export report':'compliance-reports.html','Generate report':'compliance-reports.html','+ New schedule':'settings.html'},
+    'notifications.html': {'Mark all as read':'notifications.html','Clear all':'notifications.html'},
+    'settings.html': {'Settings':'settings.html','Support':'help-support.html','Save changes':'settings.html','+ Add user':'settings.html','+ New template':'settings.html','Revoke':'settings.html','Edit':'settings.html'},
+    'help-support.html': {'Support':'help-support.html','Raise ticket':'help-support.html','Start live chat':'help-support.html'},
+    'create-tender.html': {'Tenders':'tender-list.html','Save as draft':'tender-list.html'},
+    'forgot-password.html': {'Send reset link':'login.html'},
+    'procurement-officer-dashboard.html': {'Tenders':'tender-list.html'}
+  }[page] || {};
+  document.querySelectorAll('a[href="#"]').forEach(a=>{
+    const t=a.textContent.replace(/\s+/g,' ').trim();
+    if(routes[t]) a.href=routes[t];
+  });
+  document.querySelectorAll('button').forEach(b=>{
+    const t=b.textContent.replace(/\s+/g,' ').trim();
+    if(routes[t]) { b.type='button'; b.addEventListener('click',()=>location.href=routes[t]); }
+  });
+  // Common action cards/links that are visually clickable but had no destination.
+  document.querySelectorAll('a:not([href]), button:not([onclick])').forEach(el=>{
+    const t=el.textContent.replace(/\s+/g,' ').trim();
+    if(!t || t==='Renew now' || t==='Upload document') return;
+    if(t==='View') { el.href = page.includes('bidder') ? 'bid-detail.html' : 'compliance-details.html'; }
+  });
+})();
+</script>
+<!-- PRAMAAN STICKY CHATBOT -->
+<style>
+#pramaan-chatbot{position:fixed;right:22px;bottom:22px;z-index:99999;font-family:inherit}
+#pramaan-chatbot .chat-toggle{width:58px;height:58px;border:0;border-radius:50%;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.22);background:#111827;color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center}
+#pramaan-chatbot .chat-panel{display:none;position:absolute;right:0;bottom:70px;width:340px;max-width:calc(100vw - 32px);height:430px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.2);overflow:hidden}
+#pramaan-chatbot.open .chat-panel{display:flex;flex-direction:column}
+#pramaan-chatbot .chat-head{padding:15px 16px;background:#111827;color:#fff;display:flex;align-items:center;justify-content:space-between}
+#pramaan-chatbot .chat-head strong{font-size:15px}
+#pramaan-chatbot .chat-head span{font-size:11px;opacity:.7}
+#pramaan-chatbot .chat-close{background:none;border:0;color:#fff;font-size:20px;cursor:pointer}
+#pramaan-chatbot .chat-body{flex:1;padding:14px;overflow:auto;background:#f8fafc}
+#pramaan-chatbot .msg{padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:13px;line-height:1.45;max-width:88%;background:#fff;border:1px solid #e5e7eb}
+#pramaan-chatbot .msg.bot{margin-right:auto}
+#pramaan-chatbot .msg.user{margin-left:auto;background:#111827;color:#fff;border-color:#111827}
+#pramaan-chatbot .chat-input{display:flex;padding:10px;border-top:1px solid #e5e7eb;background:#fff;gap:8px}
+#pramaan-chatbot input{flex:1;border:1px solid #d1d5db;border-radius:10px;padding:9px 10px;outline:none}
+#pramaan-chatbot .send{border:0;border-radius:10px;padding:0 14px;background:#111827;color:#fff;cursor:pointer}
+</style>
+<div id="pramaan-chatbot" aria-label="Pramaan Assistant">
+  <div class="chat-panel">
+    <div class="chat-head"><div><strong>Pramaan Assistant</strong><br><span>Procurement help</span></div><button class="chat-close" aria-label="Close">×</button></div>
+    <div class="chat-body"><div class="msg bot">Hello! I’m Pramaan Assistant. Ask me about tenders, bids, registration, compliance, or procurement workflows.</div></div>
+    <form class="chat-input"><input aria-label="Ask Pramaan Assistant" placeholder="Type your question…"><button class="send">Send</button></form>
+  </div>
+  <button class="chat-toggle" aria-label="Open Pramaan Assistant">💬</button>
+</div>
+<script>
+(function(){const root=document.getElementById('pramaan-chatbot');if(!root)return;const toggle=root.querySelector('.chat-toggle'),close=root.querySelector('.chat-close'),form=root.querySelector('.chat-input'),input=root.querySelector('input'),body=root.querySelector('.chat-body');toggle.onclick=()=>root.classList.toggle('open');close.onclick=()=>root.classList.remove('open');form.onsubmit=e=>{e.preventDefault();const q=input.value.trim();if(!q)return;body.insertAdjacentHTML('beforeend','<div class="msg user"></div><div class="msg bot">I can help with Pramaan’s procurement workflow. For this prototype, please use the relevant dashboard action or page for the requested task.</div>');body.lastElementChild.previousElementSibling.textContent=q;input.value='';body.scrollTop=body.scrollHeight;};})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/runtime-config.js"></script>
+<script src="assets/supabase.js"></script>
+</body>
+</html>

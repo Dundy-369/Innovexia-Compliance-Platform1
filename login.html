@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Log in — Pramaan</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#14183A;
+  --navy-soft:#7178A6;
+  --cream:#F7F3E9;
+  --cream-dim:#EEE7D6;
+  --cream-soft:#C7CBE4;
+  --green:#37B676;
+  --green-deep:#279158;
+  --white:#FFFFFF;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  background:var(--cream); color:var(--navy);
+  font-family:'IBM Plex Sans', sans-serif; font-size:16px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.01em;}
+a{color:inherit;}
+.wrap{max-width:1160px; margin:0 auto; padding:0 32px;}
+@media(max-width:640px){.wrap{padding:0 22px;}}
+
+/* header */
+header{background:var(--navy); color:var(--cream);}
+.header-inner{display:flex; align-items:center; justify-content:space-between; padding:22px 0;}
+.logo{font-family:'Fraunces', serif; font-size:21px; font-weight:600; text-decoration:none; color:var(--cream);}
+.logo span{color:var(--green);}
+.header-actions{display:flex; align-items:center; gap:18px; font-size:14px;}
+.header-actions a{text-decoration:none; color:var(--cream-soft);}
+.header-actions a:hover{color:var(--cream);}
+.btn{
+  font-family:'IBM Plex Sans', sans-serif; font-size:14px; font-weight:500;
+  padding:10px 20px; border:1px solid var(--cream); border-radius:5px;
+  background:transparent; color:var(--cream); cursor:pointer; text-decoration:none; display:inline-block;
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:0.85;}
+.btn-fill{background:var(--green); color:var(--navy); border-color:var(--green); font-weight:600;}
+.btn-block{width:100%; text-align:center;}
+
+/* split auth layout */
+.auth-grid{display:grid; grid-template-columns:1fr 1fr; min-height:calc(100vh - 73px);}
+@media(max-width:860px){ .auth-grid{grid-template-columns:1fr;} }
+
+.auth-side{
+  background:var(--navy); color:var(--cream);
+  display:flex; flex-direction:column; justify-content:center;
+  padding:64px; 
+}
+@media(max-width:860px){ .auth-side{padding:56px 32px;} }
+.auth-side h1{font-size:38px; line-height:1.15; max-width:14ch; margin-bottom:22px;}
+.auth-side p{font-family:'Source Serif 4', serif; font-size:17px; color:var(--cream-soft); line-height:1.6; max-width:38ch; margin-bottom:44px;}
+.auth-side-meta{display:flex; flex-wrap:wrap;}
+.auth-side-meta div{padding:0 28px 16px 0; border-left:1px solid rgba(247,243,233,0.2); padding-left:28px;}
+.auth-side-meta div:first-child{border-left:none; padding-left:0;}
+.auth-side-meta strong{display:block; font-family:'Fraunces', serif; font-size:22px; color:var(--green); margin-bottom:2px;}
+.auth-side-meta span{font-size:12.5px; color:var(--cream-soft);}
+
+.auth-form-panel{
+  display:flex; align-items:center; justify-content:center; padding:64px 32px;
+}
+.auth-form{width:100%; max-width:380px;}
+.auth-form h2{font-size:27px; margin-bottom:8px;}
+.auth-form .sub{font-size:14.5px; color:var(--navy-soft); margin-bottom:36px;}
+
+/* role tabs */
+.role-tabs{display:flex; gap:28px; margin-bottom:34px; border-bottom:1px solid rgba(20,24,58,0.12);}
+.role-radio{display:none;}
+.role-label{
+  font-size:14px; color:var(--navy-soft); padding-bottom:12px; cursor:pointer;
+  border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .15s ease;
+}
+.role-radio:checked + .role-label{color:var(--navy); font-weight:600; border-bottom-color:var(--green);}
+
+/* fields */
+.field{margin-bottom:22px;}
+.field label{display:block; font-size:13px; color:var(--navy-soft); margin-bottom:7px;}
+.field input{
+  width:100%; border:none; border-bottom:1px solid rgba(20,24,58,0.25);
+  background:transparent; padding:8px 0; font-size:15px; font-family:'IBM Plex Sans', sans-serif; color:var(--navy);
+}
+.field input:focus{outline:none; border-bottom-color:var(--green);}
+.field input::placeholder{color:rgba(20,24,58,0.32);}
+
+.row-between{display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; font-size:13.5px;}
+.check{display:flex; align-items:center; gap:8px; color:var(--navy-soft);}
+.check input{accent-color:var(--green);}
+.row-between a{color:var(--green-deep); text-decoration:none; font-weight:500;}
+.row-between a:hover{text-decoration:underline;}
+
+.divider{display:flex; align-items:center; gap:14px; margin:30px 0; color:var(--navy-soft); font-size:12.5px;}
+.divider::before, .divider::after{content:''; flex:1; height:1px; background:rgba(20,24,58,0.15);}
+
+.stack-btns{display:flex; flex-direction:column; gap:12px; margin-bottom:36px;}
+.stack-btns .btn{border-color:rgba(20,24,58,0.3); color:var(--navy);}
+
+.foot-links{display:flex; flex-wrap:wrap; justify-content:center; gap:0; font-size:13px; color:var(--navy-soft);}
+.foot-links span{padding:0 16px; border-left:1px solid rgba(20,24,58,0.2);}
+.foot-links span:first-child{border-left:none; padding-left:0;}
+.foot-links a{color:var(--green-deep); text-decoration:none; font-weight:500;}
+.foot-links a:hover{text-decoration:underline;}
+ .officer-note{display:none;margin:16px 0;padding:14px 16px;border:1px solid rgba(55,182,118,.35);background:#DFF3E7;border-radius:8px;color:#14183A}.officer-note strong{display:block;font-size:13px;margin-bottom:4px}.officer-note span{font-size:12px;color:#4f5a79}.role-radio:nth-of-type(3):checked ~ .officer-note{display:block}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap header-inner">
+<a class="logo" href="index.html">Pramaan<span>.</span></a>
+<div class="header-actions">
+<span>New here?</span>
+<a class="btn" href="register.html">Register</a>
+</div>
+</div>
+</header>
+<div class="auth-grid">
+<div class="auth-side">
+<h1>Welcome back to the desk that already read the file.</h1>
+<p>Every login opens straight into the tenders, bids and compliance reports tied to your account — nothing to re-search for.</p>
+<div class="auth-side-meta">
+<div><strong>10,000+</strong><span>Bidders verified</span></div>
+<div><strong>500+</strong><span>Tenders processed</span></div>
+<div><strong>98%</strong><span>Compliance accuracy</span></div>
+</div>
+</div>
+<div class="auth-form-panel">
+<div class="auth-form">
+<h2>Log in</h2>
+<p class="sub">Choose your role, then enter your credentials.</p>
+<div class="role-tabs">
+<input checked="" class="role-radio" id="role-buyer" name="role" type="radio"/>
+<label class="role-label" for="role-buyer">Buyer</label>
+<input class="role-radio" id="role-bidder" name="role" type="radio"/>
+<label class="role-label" for="role-bidder">Bidder</label>
+<input class="role-radio" id="role-officer" name="role" type="radio"/>
+<label class="role-label" for="role-officer">Procurement Officer</label>
+</div>
+<div class="officer-note" id="officer-note">
+<strong>Procurement Officer access</strong>
+<span>Use your verified government organization credentials. Officer accounts can manage tenders, bidder verification, compliance, analytics and audit workflows.</span>
+</div>
+<form>
+<div class="field">
+<label for="email">Email address or username</label>
+<input id="email" placeholder="you@organization.gov.in" type="text"/>
+</div>
+<div class="field">
+<label for="password">Password</label>
+<input id="password" placeholder="••••••••" type="password"/>
+</div>
+<div class="row-between">
+<label class="check"><input type="checkbox"/>Remember me</label>
+<a href="forgot-password.html">Forgot password?</a>
+</div>
+<a class="btn btn-fill btn-block" href="#" onclick="routeLogin(event); return false;">Log in</a>
+</form>
+<div class="foot-links">
+<span><a href="register.html">Create an account</a></span>
+<span></span>
+</div>
+</div>
+</div>
+</div>
+<script>
+async function routeLogin(event){
+  if(event) event.preventDefault();
+  if(!window.supabaseClient){ alert('Supabase is not configured. Check assets/supabase.js.'); return false; }
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value;
+  if(!email || !password){ alert('Please enter your email and password.'); return false; }
+  const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
+  if(error){ alert('Login failed: '+error.message); return false; }
+  if(document.getElementById('role-officer').checked){
+    window.location.href='procurement-officer-dashboard.html';
+  } else if(document.getElementById('role-buyer').checked){
+    window.location.href='buyer-dashboard.html';
+  } else {
+    window.location.href='bidder-dashboard.html';
+  }
+  return false;
+}
+</script>
+<script id="pramaan-routing">
+(function(){
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const routes = {
+    'index.html': {
+      'Documentation':'help-support.html','API':'settings.html','Security':'settings.html','Privacy policy':'settings.html','Terms of service':'settings.html','Compliance':'compliance-reports.html'
+    },
+    'browse-tenders.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'my-bids.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'bid-detail.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'bidder-dashboard.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'tender-detail-bidder.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'submit-bid.html': {'Back':'tender-detail-bidder.html','Save as draft':'my-bids.html','Submit bid':'bid-detail.html'},
+    'buyer-dashboard.html': {'Dashboard':'buyer-dashboard.html','Tenders':'tender-list.html','Pending verification':'compliance-queue.html','Blacklisted':'bidders-list.html'},
+    'tender-list.html': {'Tenders':'tender-list.html','Bulk close':'tender-list.html','Export to Excel':'analytics.html','Download compliance report':'compliance-reports.html'},
+    'tender-detail.html': {'Tenders':'tender-list.html','Download document':'tenderdetail.html','Edit tender':'create-tender.html','View meeting link':'tenderdetail.html','Export list':'bidders-list.html','Submit decision':'compliance-details.html','Generate award letter':'tenderdetail.html','Download all (ZIP)':'compliance-details.html','Add response':'compliance-details.html','Download report':'compliance-reports.html'},
+    'tenderdetail.html': {'Tenders':'tender-list.html','Download document':'tenderdetail.html','Edit tender':'create-tender.html','View meeting link':'tenderdetail.html','Export list':'bidders-list.html','Submit decision':'compliance-details.html','Generate award letter':'tenderdetail.html','Download all (ZIP)':'compliance-details.html','Add response':'compliance-details.html','Download report':'compliance-reports.html'},
+    'compliance-queue.html': {'Bulk verify selected':'compliance-details.html'},
+    'compliance-reports.html': {'Bulk verify selected':'compliance-details.html'},
+    'compliance-details.html': {'Tenders':'tender-list.html','Qualify bidder':'compliance-reports.html','Seek clarification':'compliance-details.html#clarification','Disqualify':'compliance-reports.html','Download compliance report':'compliance-reports.html','Download bidder documents':'compliance-details.html','Download all (14)':'compliance-details.html'},
+    'compliance-detail.html': {'Tenders':'tender-list.html','Qualify bidder':'compliance-reports.html','Seek clarification':'compliance-detail.html#clarification','Disqualify':'compliance-reports.html','Download compliance report':'compliance-reports.html','Download bidder documents':'compliance-detail.html','Download all (14)':'compliance-detail.html'},
+    'bidders-list.html': {'Bidders':'bidders-list.html','All bidders':'bidders-list.html','Pending verification':'compliance-queue.html','Blacklisted':'bidders-list.html','Export list':'analytics.html'},
+    'bidder-profile.html': {'Bidders':'bidders-list.html','Message bidder':'notifications.html','Download profile':'bidder-profile.html','Blacklist bidder':'bidders-list.html'},
+    'analytics.html': {'Refresh data':'analytics.html','Export report':'compliance-reports.html','Generate report':'compliance-reports.html','+ New schedule':'settings.html'},
+    'notifications.html': {'Mark all as read':'notifications.html','Clear all':'notifications.html'},
+    'settings.html': {'Settings':'settings.html','Support':'help-support.html','Save changes':'settings.html','+ Add user':'settings.html','+ New template':'settings.html','Revoke':'settings.html','Edit':'settings.html'},
+    'help-support.html': {'Support':'help-support.html','Raise ticket':'help-support.html','Start live chat':'help-support.html'},
+    'create-tender.html': {'Tenders':'tender-list.html','Save as draft':'tender-list.html'},
+    'forgot-password.html': {'Send reset link':'login.html'},
+    'procurement-officer-dashboard.html': {'Tenders':'tender-list.html'}
+  }[page] || {};
+  document.querySelectorAll('a[href="#"]').forEach(a=>{
+    const t=a.textContent.replace(/\s+/g,' ').trim();
+    if(routes[t]) a.href=routes[t];
+  });
+  document.querySelectorAll('button').forEach(b=>{
+    const t=b.textContent.replace(/\s+/g,' ').trim();
+    if(routes[t]) { b.type='button'; b.addEventListener('click',()=>location.href=routes[t]); }
+  });
+  // Common action cards/links that are visually clickable but had no destination.
+  document.querySelectorAll('a:not([href]), button:not([onclick])').forEach(el=>{
+    const t=el.textContent.replace(/\s+/g,' ').trim();
+    if(!t || t==='Renew now' || t==='Upload document') return;
+    if(t==='View') { el.href = page.includes('bidder') ? 'bid-detail.html' : 'compliance-details.html'; }
+  });
+})();
+</script>
+<!-- PRAMAAN STICKY CHATBOT -->
+<style>
+#pramaan-chatbot{position:fixed;right:22px;bottom:22px;z-index:99999;font-family:inherit}
+#pramaan-chatbot .chat-toggle{width:58px;height:58px;border:0;border-radius:50%;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.22);background:#111827;color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center}
+#pramaan-chatbot .chat-panel{display:none;position:absolute;right:0;bottom:70px;width:340px;max-width:calc(100vw - 32px);height:430px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.2);overflow:hidden}
+#pramaan-chatbot.open .chat-panel{display:flex;flex-direction:column}
+#pramaan-chatbot .chat-head{padding:15px 16px;background:#111827;color:#fff;display:flex;align-items:center;justify-content:space-between}
+#pramaan-chatbot .chat-head strong{font-size:15px}
+#pramaan-chatbot .chat-head span{font-size:11px;opacity:.7}
+#pramaan-chatbot .chat-close{background:none;border:0;color:#fff;font-size:20px;cursor:pointer}
+#pramaan-chatbot .chat-body{flex:1;padding:14px;overflow:auto;background:#f8fafc}
+#pramaan-chatbot .msg{padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:13px;line-height:1.45;max-width:88%;background:#fff;border:1px solid #e5e7eb}
+#pramaan-chatbot .msg.bot{margin-right:auto}
+#pramaan-chatbot .msg.user{margin-left:auto;background:#111827;color:#fff;border-color:#111827}
+#pramaan-chatbot .chat-input{display:flex;padding:10px;border-top:1px solid #e5e7eb;background:#fff;gap:8px}
+#pramaan-chatbot input{flex:1;border:1px solid #d1d5db;border-radius:10px;padding:9px 10px;outline:none}
+#pramaan-chatbot .send{border:0;border-radius:10px;padding:0 14px;background:#111827;color:#fff;cursor:pointer}
+</style>
+<div id="pramaan-chatbot" aria-label="Pramaan Assistant">
+  <div class="chat-panel">
+    <div class="chat-head"><div><strong>Pramaan Assistant</strong><br><span>Procurement help</span></div><button class="chat-close" aria-label="Close">×</button></div>
+    <div class="chat-body"><div class="msg bot">Hello! I’m Pramaan Assistant. Ask me about tenders, bids, registration, compliance, or procurement workflows.</div></div>
+    <form class="chat-input"><input aria-label="Ask Pramaan Assistant" placeholder="Type your question…"><button class="send">Send</button></form>
+  </div>
+  <button class="chat-toggle" aria-label="Open Pramaan Assistant">💬</button>
+</div>
+<script>
+(function(){const root=document.getElementById('pramaan-chatbot');if(!root)return;const toggle=root.querySelector('.chat-toggle'),close=root.querySelector('.chat-close'),form=root.querySelector('.chat-input'),input=root.querySelector('input'),body=root.querySelector('.chat-body');toggle.onclick=()=>root.classList.toggle('open');close.onclick=()=>root.classList.remove('open');form.onsubmit=e=>{e.preventDefault();const q=input.value.trim();if(!q)return;body.insertAdjacentHTML('beforeend','<div class="msg user"></div><div class="msg bot">I can help with Pramaan’s procurement workflow. For this prototype, please use the relevant dashboard action or page for the requested task.</div>');body.lastElementChild.previousElementSibling.textContent=q;input.value='';body.scrollTop=body.scrollHeight;};})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/runtime-config.js"></script>
+<script src="assets/supabase.js"></script>
+</body>
+</html>

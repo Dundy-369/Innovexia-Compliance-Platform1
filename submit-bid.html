@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Submit bid — Pramaan</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#14183A; --navy-soft:#7178A6;
+  --cream:#F7F3E9; --cream-dim:#EEE7D6;
+  --ink:#22263F;
+  --line:rgba(20,24,58,0.10);
+  --green:#37B676; --green-deep:#279158; --green-bg:#DFF3E7;
+  --amber:#C98A2E; --amber-bg:#F5E9D3;
+  --red:#C1473A; --red-bg:#F5DEDA;
+  --white:#FFFFFF;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  background:var(--cream); color:var(--ink);
+  font-family:'IBM Plex Sans', sans-serif; font-size:14.5px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.01em; color:var(--navy);}
+a{color:inherit; text-decoration:none;}
+
+/* minimal focused header */
+header{background:var(--white); border-bottom:1px solid var(--line); padding:18px 40px; display:flex; justify-content:space-between; align-items:center;}
+.logo{font-family:'Fraunces', serif; font-size:19px; font-weight:600; color:var(--navy);}
+.logo span{color:var(--green);}
+.h-context{font-size:12.5px; color:var(--navy-soft); text-align:right;}
+.h-context b{color:var(--navy); font-weight:500;}
+.exit-link{font-size:13px; color:var(--navy-soft);}
+.exit-link:hover{color:var(--navy);}
+.h-left{display:flex; align-items:center; gap:26px;}
+
+.wrap{max-width:840px; margin:0 auto; padding:0 24px;}
+
+/* stepper */
+.stepper{display:flex; align-items:center; padding:34px 0 8px;}
+.step-node{display:flex; flex-direction:column; align-items:center; flex:1; position:relative;}
+.step-circle{
+  width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-family:'IBM Plex Mono', monospace; font-size:13px; background:var(--white); border:2px solid var(--line); color:var(--navy-soft);
+  z-index:2; transition:all .15s ease;
+}
+.step-node.done .step-circle{background:var(--green); border-color:var(--green); color:var(--white);}
+.step-node.current .step-circle{border-color:var(--navy); color:var(--navy); font-weight:600;}
+.step-label{font-size:11.5px; color:var(--navy-soft); margin-top:9px; text-align:center; max-width:90px;}
+.step-node.current .step-label{color:var(--navy); font-weight:500;}
+.step-line{position:absolute; top:16px; left:-50%; width:100%; height:2px; background:var(--line); z-index:1;}
+.step-node:first-child .step-line{display:none;}
+.step-node.done .step-line{background:var(--green);}
+
+/* step panel */
+.step-panel{display:none; padding:36px 0 100px;}
+.step-panel.active{display:block;}
+.panel{background:var(--white); border:1px solid var(--line); border-radius:8px; margin-bottom:20px;}
+.panel-head{padding:22px 26px; border-bottom:1px solid var(--line);}
+.panel-head h2{font-size:19px; margin-bottom:5px;}
+.panel-head p{font-size:13px; color:var(--navy-soft);}
+.panel-body{padding:22px 26px;}
+
+/* eligibility */
+.elig-row{display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--line); font-size:13.5px;}
+.elig-row:last-child{border-bottom:none;}
+.elig-ok{color:var(--green-deep); font-weight:500; font-size:12.5px;}
+.score-banner{display:flex; align-items:center; justify-content:space-between; background:var(--green-bg); border-radius:8px; padding:18px 22px; margin-bottom:6px;}
+.score-banner .num{font-family:'Fraunces', serif; font-size:32px; color:var(--green-deep);}
+.score-banner .lbl{font-size:13px; color:var(--green-deep); max-width:26ch; text-align:right;}
+.check-line{display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:var(--ink); margin-top:20px;}
+.check-line input{accent-color:var(--green); width:15px; height:15px; margin-top:2px;}
+
+/* upload */
+.sub-head{font-size:13px; font-weight:600; color:var(--navy); margin:22px 0 6px;}
+.sub-head:first-child{margin-top:0;}
+.upload-row{display:flex; justify-content:space-between; align-items:center; gap:16px; padding:14px 0; border-bottom:1px dashed rgba(20,24,58,0.25);}
+.upload-row:last-child{border-bottom:none;}
+.upload-row .u-name{font-size:13.5px; font-weight:500;}
+.upload-row .u-name .req{color:var(--amber); font-size:11px; margin-left:6px; font-weight:400;}
+.upload-row .u-hint{font-size:11.5px; color:var(--navy-soft); margin-top:2px;}
+.upload-row input[type=file]{display:none;}
+.upload-row .upload-btn{font-size:12px; color:var(--green-deep); border:1px solid var(--green-deep); border-radius:5px; padding:7px 13px; cursor:pointer; white-space:nowrap;}
+.upload-row .upload-btn.done{color:var(--navy-soft); border-color:var(--line);}
+
+/* fields */
+.fields-2col{display:grid; grid-template-columns:1fr 1fr; gap:0 28px;}
+@media(max-width:600px){.fields-2col{grid-template-columns:1fr;}}
+.field{margin-bottom:22px;}
+.field label{display:block; font-size:13px; color:var(--navy-soft); margin-bottom:7px;}
+.field input, .field select, .field textarea{
+  width:100%; border:none; border-bottom:1px solid rgba(20,24,58,0.25);
+  background:transparent; padding:8px 0; font-size:14.5px; font-family:'IBM Plex Sans', sans-serif; color:var(--navy); resize:vertical;
+}
+.field input:focus, .field select:focus, .field textarea:focus{outline:none; border-bottom-color:var(--green);}
+.field.full{grid-column:1 / -1;}
+
+/* pricing table */
+.price-table{width:100%; border-collapse:collapse; margin-bottom:18px;}
+.price-table th{text-align:left; font-size:12px; color:var(--navy-soft); font-weight:500; padding:10px 8px; border-bottom:2px solid var(--navy);}
+.price-table td{padding:10px 8px; border-bottom:1px solid var(--line); font-size:13.5px;}
+.price-table input{width:100%; border:none; border-bottom:1px solid rgba(20,24,58,0.25); background:transparent; padding:6px 0; font-size:13.5px; color:var(--navy);}
+.price-total-row{display:flex; justify-content:flex-end; gap:40px; padding:14px 8px; font-size:14px;}
+.price-total-row b{font-family:'IBM Plex Mono', monospace; color:var(--navy);}
+
+/* payment */
+.pay-tabs{display:flex; gap:24px; border-bottom:1px solid var(--line); margin-bottom:22px;}
+.pay-radio{display:none;}
+.pay-label{font-size:13.5px; color:var(--navy-soft); padding-bottom:11px; border-bottom:2px solid transparent; margin-bottom:-1px; cursor:pointer;}
+.pay-radio:checked + .pay-label{color:var(--navy); font-weight:600; border-bottom-color:var(--green);}
+.emd-amount{background:var(--cream-dim); border-radius:8px; padding:18px 20px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center;}
+.emd-amount .num{font-family:'Fraunces', serif; font-size:26px; color:var(--navy);}
+.emd-amount .lbl{font-size:12.5px; color:var(--navy-soft);}
+
+/* review */
+.rev-block{margin-bottom:24px;}
+.rev-block h3{font-size:14.5px; margin-bottom:10px;}
+.rev-row{display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--line); font-size:13.5px;}
+.rev-row:last-child{border-bottom:none;}
+.rev-row .k{color:var(--navy-soft);}
+.rev-row .v{font-weight:500;}
+.decl{display:flex; gap:10px; font-size:13px; color:var(--ink); margin-bottom:14px; align-items:flex-start;}
+.decl input{accent-color:var(--green); margin-top:3px;}
+
+/* nav buttons */
+.step-nav{display:flex; justify-content:space-between; align-items:center; padding-top:6px;}
+.btn{font-size:13.5px; font-weight:500; padding:11px 22px; border-radius:6px; border:1px solid var(--navy); color:var(--navy); cursor:pointer; display:inline-block; background:transparent;}
+.btn-fill{background:var(--green); border-color:var(--green); color:var(--navy); font-weight:600;}
+.btn-text{border:none; color:var(--navy-soft); padding:11px 4px;}
+
+/* confirmation */
+.confirm{display:none; text-align:center; padding:70px 0;}
+.confirm.active{display:block;}
+.confirm-icon{width:60px; height:60px; border-radius:50%; background:var(--green-bg); color:var(--green-deep); display:flex; align-items:center; justify-content:center; margin:0 auto 22px; font-size:26px;}
+.confirm h1{font-size:28px; margin-bottom:10px;}
+.confirm p{color:var(--navy-soft); font-size:14.5px; margin-bottom:26px;}
+.confirm .ref{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--navy); background:var(--cream-dim); display:inline-block; padding:10px 18px; border-radius:6px; margin-bottom:30px;}
+.confirm .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<header>
+<div class="h-left">
+<a class="logo" href="bidder-dashboard.html">Pramaan<span>.</span></a>
+<a class="exit-link" href="browse-tenders.html">← Save &amp; exit</a>
+</div>
+<div class="h-context">Submitting bid for<br/><b>GEM/2026/B/44198 — Industrial safety equipment</b></div>
+</header>
+<div class="wrap">
+<div class="stepper" id="stepper">
+<div class="step-node current" data-step="1"><div class="step-line"></div><div class="step-circle">1</div><div class="step-label">Review eligibility</div></div>
+<div class="step-node" data-step="2"><div class="step-line"></div><div class="step-circle">2</div><div class="step-label">Upload documents</div></div>
+<div class="step-node" data-step="3"><div class="step-line"></div><div class="step-circle">3</div><div class="step-label">Bid details</div></div>
+<div class="step-node" data-step="4"><div class="step-line"></div><div class="step-circle">4</div><div class="step-label">Pay EMD</div></div>
+<div class="step-node" data-step="5"><div class="step-line"></div><div class="step-circle">5</div><div class="step-label">Review &amp; submit</div></div>
+</div>
+<!-- STEP 1 -->
+<div class="step-panel active" id="panel-1">
+<div class="panel">
+<div class="panel-head"><h2>Review your eligibility</h2><p>We checked this automatically against the tender's criteria.</p></div>
+<div class="panel-body">
+<div class="score-banner">
+<div class="num">91<span style="font-size:16px;">/100</span></div>
+<div class="lbl">Your compliance match for this tender</div>
+</div>
+<div class="elig-row"><span>Minimum turnover (₹3 crore required)</span><span class="elig-ok">✓ Met</span></div>
+<div class="elig-row"><span>Years in business (5+ required)</span><span class="elig-ok">✓ Met</span></div>
+<div class="elig-row"><span>MSME registration</span><span class="elig-ok">✓ Verified — Udyam registered</span></div>
+<div class="elig-row"><span>GST, PAN &amp; company registration</span><span class="elig-ok">✓ Verified</span></div>
+<div class="elig-row"><span>Technical certifications (ISO 9001, BIS)</span><span class="elig-ok">✓ On file</span></div>
+<label class="check-line"><input type="checkbox"/>I confirm the details above are accurate and I want to proceed with this bid.</label>
+</div>
+</div>
+<div class="step-nav"><span></span><a class="btn btn-fill" href="#" onclick="goTo(2); return false;">Continue</a></div>
+</div>
+<!-- STEP 2 -->
+<div class="step-panel" id="panel-2">
+<div class="panel">
+<div class="panel-head"><h2>Upload documents</h2><p>Statutory documents already on file are pre-filled — replace them only if they've changed.</p></div>
+<div class="panel-body">
+<div class="sub-head">Statutory documents</div>
+<div class="upload-row"><div><div class="u-name">GST certificate</div><div class="u-hint" id="hint-gst">On file — verified 12 Aug 2026</div></div><label class="upload-btn done">Replace<input type="file" data-doc="gst" accept=".pdf,.png,.jpg,.jpeg,.webp"/></label></div>
+<div class="upload-row"><div><div class="u-name">PAN card</div><div class="u-hint" id="hint-pan">On file — verified 12 Aug 2026</div></div><label class="upload-btn done">Replace<input type="file" data-doc="pan" accept=".pdf,.png,.jpg,.jpeg,.webp"/></label></div>
+<div class="upload-row"><div><div class="u-name">Udyam certificate</div><div class="u-hint" id="hint-udyam">On file — verified 12 Aug 2026</div></div><label class="upload-btn done">Replace<input type="file" data-doc="udyam" accept=".pdf,.png,.jpg,.jpeg,.webp"/></label></div>
+<div class="upload-row"><div><div class="u-name">EPFO compliance</div><div class="u-hint">Expires in 15 days</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="sub-head">Technical documents</div>
+<div class="upload-row"><div><div class="u-name">Technical proposal<span class="req">Mandatory</span></div><div class="u-hint">Not uploaded</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="upload-row"><div><div class="u-name">Product specifications</div><div class="u-hint">Not uploaded</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="upload-row"><div><div class="u-name">Test reports &amp; quality certificates</div><div class="u-hint">Not uploaded</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="sub-head">Financial documents</div>
+<div class="upload-row"><div><div class="u-name">Price bid<span class="req">Mandatory</span></div><div class="u-hint">Download the BOQ template, fill it, then upload</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="upload-row"><div><div class="u-name">Audited financial statements</div><div class="u-hint">Not uploaded</div></div><label class="upload-btn">Choose file<input type="file"/></label></div>
+<div class="sub-head">Additional documents</div>
+<div class="upload-row"><div><div class="u-name">Past performance certificates</div><div class="u-hint">Up to 5 files</div></div><label class="upload-btn">Choose files<input multiple="" type="file"/></label></div>
+</div>
+</div>
+<div class="step-nav"><a class="btn btn-text" href="#" onclick="goTo(1); return false;">Back</a><a class="btn btn-fill" href="#" onclick="goTo(3); return false;">Continue</a></div>
+</div>
+<!-- STEP 3 -->
+<div class="step-panel" id="panel-3">
+<div class="panel">
+<div class="panel-head"><h2>Technical bid</h2></div>
+<div class="panel-body">
+<div class="fields-2col">
+<div class="field"><label>Make / model number</label><input type="text"/></div>
+<div class="field"><label>Country of origin</label><input type="text" value="India"/></div>
+<div class="field"><label>Local content (%)</label><input type="number" value="42"/></div>
+<div class="field"><label>Delivery timeline (days from LOA)</label><input type="number"/></div>
+<div class="field"><label>Warranty period</label><input placeholder="e.g. 5 years" type="text"/></div>
+<div class="field"><label>Installation / commissioning timeline</label><input type="text"/></div>
+</div>
+<div class="field full"><label>Technical specifications (as per BOQ)</label><textarea placeholder="Describe how your offering meets each specification line." rows="3"></textarea></div>
+<div class="field full"><label>Deviations from tender terms, if any</label><textarea placeholder="Leave blank if none" rows="2"></textarea></div>
+</div>
+</div>
+<div class="panel">
+<div class="panel-head"><h2>Financial bid</h2><p>Pricing follows the tender's bill of quantities.</p></div>
+<div class="panel-body">
+<table class="price-table">
+<thead><tr><th>Item</th><th>Qty</th><th>Unit price (₹)</th><th>Total (₹)</th></tr></thead>
+<tbody>
+<tr><td>Fender unit — Type A</td><td>24</td><td><input class="unit-price" data-qty="24" oninput="calcRow(this)" type="number"/></td><td class="row-total mono">0</td></tr>
+<tr><td>Mounting hardware set</td><td>24</td><td><input class="unit-price" data-qty="24" oninput="calcRow(this)" type="number"/></td><td class="row-total mono">0</td></tr>
+<tr><td>Installation service</td><td>1</td><td><input class="unit-price" data-qty="1" oninput="calcRow(this)" type="number"/></td><td class="row-total mono">0</td></tr>
+</tbody>
+</table>
+<div class="price-total-row"><span>Grand total</span><b id="grandTotal">₹0</b></div>
+<div class="fields-2col">
+<div class="field"><label>GST (%)</label><select id="gstRate" onchange="calcGST()"><option value="18">18%</option><option value="12">12%</option><option value="5">5%</option></select></div>
+<div class="field"><label>Bid validity (days)</label><input type="number" value="90"/></div>
+</div>
+<div class="price-total-row" style="border-top:1px solid var(--line);"><span>Total incl. GST</span><b id="totalGST">₹0</b></div>
+</div>
+</div>
+<div class="step-nav"><a class="btn btn-text" href="#" onclick="goTo(2); return false;">Back</a><a class="btn btn-fill" href="#" onclick="goTo(4); return false;">Continue</a></div>
+</div>
+<!-- STEP 4 -->
+<div class="step-panel" id="panel-4">
+<div class="panel">
+<div class="panel-head"><h2>Pay bid security (EMD)</h2></div>
+<div class="panel-body">
+<div class="emd-amount"><div><div class="lbl">Bid security amount</div><div class="num">₹85,000</div></div><div class="lbl">Refundable if unsuccessful</div></div>
+<input checked="" class="pay-radio" id="p1" name="pay" type="radio"/><input class="pay-radio" id="p2" name="pay" type="radio"/><input class="pay-radio" id="p3" name="pay" type="radio"/><input class="pay-radio" id="p4" name="pay" type="radio"/>
+<div class="pay-tabs">
+<label class="pay-label" for="p1">Net banking</label>
+<label class="pay-label" for="p2">Card</label>
+<label class="pay-label" for="p3">UPI</label>
+<label class="pay-label" for="p4">Bank guarantee</label>
+</div>
+<div class="fields-2col">
+<div class="field"><label>Bank</label><select><option>State Bank of India</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option></select></div>
+<div class="field"><label>Account holder name</label><input type="text" value="Velan Fabrications Pvt. Ltd."/></div>
+</div>
+</div>
+</div>
+<div class="step-nav"><a class="btn btn-text" href="#" onclick="goTo(3); return false;">Back</a><a class="btn btn-fill" href="#" onclick="goTo(5); return false;">Pay &amp; continue</a></div>
+</div>
+<!-- STEP 5 -->
+<div class="step-panel" id="panel-5">
+<div class="panel">
+<div class="panel-head"><h2>Review &amp; submit</h2><p>Take a last look before this goes to Chennai Petroleum Corp.</p></div>
+<div class="panel-body">
+<div class="rev-block">
+<h3>Tender</h3>
+<div class="rev-row"><span class="k">Tender ID</span><span class="v">GEM/2026/B/44198</span></div>
+<div class="rev-row"><span class="k">Organization</span><span class="v">Chennai Petroleum Corp.</span></div>
+<div class="rev-row"><span class="k">Submission deadline</span><span class="v">05 Sep 2026, 5:00 PM</span></div>
+</div>
+<div class="rev-block">
+<h3>Documents</h3>
+<div class="rev-row"><span class="k">Mandatory documents</span><span class="v">All uploaded</span></div>
+<div class="rev-row"><span class="k">Optional documents</span><span class="v">3 uploaded</span></div>
+</div>
+<div class="rev-block">
+<h3>Bid</h3>
+<div class="rev-row"><span class="k">Technical bid</span><span class="v">Complete</span></div>
+<div class="rev-row"><span class="k">Financial bid</span><span class="v">Complete</span></div>
+<div class="rev-row"><span class="k">Bid security</span><span class="v">₹85,000 — Paid</span></div>
+<div class="rev-row"><span class="k">Compliance score</span><span class="v">91%</span></div>
+</div>
+<label class="decl"><input type="checkbox"/>I confirm that all information provided is true and correct.</label>
+<label class="decl"><input type="checkbox"/>I agree to the terms and conditions of this tender.</label>
+<label class="decl"><input type="checkbox"/>I understand that false information may lead to disqualification and blacklisting.</label>
+<label class="decl"><input type="checkbox"/>I authorize Pramaan to verify my documents with the relevant government portals.</label>
+</div>
+</div>
+<div class="step-nav">
+<a class="btn btn-text" href="#" onclick="goTo(4); return false;">Back</a>
+<div style="display:flex; gap:10px;">
+<a class="btn" href="#">Save as draft</a>
+<a class="btn btn-fill" href="#" onclick="showConfirm(); return false;">Submit bid</a>
+</div>
+</div>
+</div>
+<!-- CONFIRMATION -->
+<div class="confirm" id="confirmScreen">
+<div class="confirm-icon">✓</div>
+<h1>Bid submitted successfully</h1>
+<p>Chennai Petroleum Corp. will review your submission before the technical bid opening on 08 Sep 2026.</p>
+<div class="ref">Reference: BID-2026-44198-0392 · Submitted 04 Sep 2026, 6:42 PM</div>
+<div class="actions">
+<a class="btn" href="bidder-dashboard.html">Track bid status</a>
+<a class="btn btn-fill" href="browse-tenders.html">Browse more tenders</a>
+</div>
+</div>
+</div>
+<script>
+function goTo(step){
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+step).classList.add('active');
+  document.querySelectorAll('.step-node').forEach(n=>{
+    const s = parseInt(n.dataset.step);
+    n.classList.remove('current','done');
+    if(s < step) n.classList.add('done');
+    if(s === step) n.classList.add('current');
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function calcRow(input){
+  const qty = parseFloat(input.dataset.qty) || 0;
+  const price = parseFloat(input.value) || 0;
+  const total = qty * price;
+  input.closest('tr').querySelector('.row-total').textContent = total.toLocaleString('en-IN');
+  let grand = 0;
+  document.querySelectorAll('.row-total').forEach(el=>{ grand += parseFloat(el.textContent.replace(/,/g,'')) || 0; });
+  document.getElementById('grandTotal').textContent = '₹'+grand.toLocaleString('en-IN');
+  calcGST();
+}
+function calcGST(){
+  const grand = parseFloat(document.getElementById('grandTotal').textContent.replace(/[₹,]/g,'')) || 0;
+  const rate = parseFloat(document.getElementById('gstRate').value) || 0;
+  const total = grand + (grand*rate/100);
+  document.getElementById('totalGST').textContent = '₹'+total.toLocaleString('en-IN', {maximumFractionDigits:0});
+}
+function showConfirm(){
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('stepper').style.display='none';
+  document.getElementById('confirmScreen').classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+<script src="assets/pramaan-ocr.js"></script>
+<script id="pramaan-routing">
+(function(){
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const routes = {
+    'index.html': {
+      'Documentation':'help-support.html','API':'settings.html','Security':'settings.html','Privacy policy':'settings.html','Terms of service':'settings.html','Compliance':'compliance-reports.html'
+    },
+    'browse-tenders.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'my-bids.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'bid-detail.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'bidder-dashboard.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'tender-detail-bidder.html': {'My profile':'bidder-profile.html','Company profile':'bidder-profile.html','Compliance documents':'bidder-profile.html#compliance','Tenders':'browse-tenders.html'},
+    'submit-bid.html': {'Back':'tender-detail-bidder.html','Save as draft':'my-bids.html','Submit bid':'bid-detail.html'},
+    'buyer-dashboard.html': {'Dashboard':'buyer-dashboard.html','Tenders':'tender-list.html','Pending verification':'compliance-queue.html','Blacklisted':'bidders-list.html'},
+    'tender-list.html': {'Tenders':'tender-list.html','Bulk close':'tender-list.html','Export to Excel':'analytics.html','Download compliance report':'compliance-reports.html'},
+    'tender-detail.html': {'Tenders':'tender-list.html','Download document':'tenderdetail.html','Edit tender':'create-tender.html','View meeting link':'tenderdetail.html','Export list':'bidders-list.html','Submit decision':'compliance-details.html','Generate award letter':'tenderdetail.html','Download all (ZIP)':'compliance-details.html','Add response':'compliance-details.html','Download report':'compliance-reports.html'},
+    'tenderdetail.html': {'Tenders':'tender-list.html','Download document':'tenderdetail.html','Edit tender':'create-tender.html','View meeting link':'tenderdetail.html','Export list':'bidders-list.html','Submit decision':'compliance-details.html','Generate award letter':'tenderdetail.html','Download all (ZIP)':'compliance-details.html','Add response':'compliance-details.html','Download report':'compliance-reports.html'},
+    'compliance-queue.html': {'Bulk verify selected':'compliance-details.html'},
+    'compliance-reports.html': {'Bulk verify selected':'compliance-details.html'},
+    'compliance-details.html': {'Tenders':'tender-list.html','Qualify bidder':'compliance-reports.html','Seek clarification':'compliance-details.html#clarification','Disqualify':'compliance-reports.html','Download compliance report':'compliance-reports.html','Download bidder documents':'compliance-details.html','Download all (14)':'compliance-details.html'},
+    'compliance-detail.html': {'Tenders':'tender-list.html','Qualify bidder':'compliance-reports.html','Seek clarification':'compliance-detail.html#clarification','Disqualify':'compliance-reports.html','Download compliance report':'compliance-reports.html','Download bidder documents':'compliance-detail.html','Download all (14)':'compliance-detail.html'},
+    'bidders-list.html': {'Bidders':'bidders-list.html','All bidders':'bidders-list.html','Pending verification':'compliance-queue.html','Blacklisted':'bidders-list.html','Export list':'analytics.html'},
+    'bidder-profile.html': {'Bidders':'bidders-list.html','Message bidder':'notifications.html','Download profile':'bidder-profile.html','Blacklist bidder':'bidders-list.html'},
+    'analytics.html': {'Refresh data':'analytics.html','Export report':'compliance-reports.html','Generate report':'compliance-reports.html','+ New schedule':'settings.html'},
+    'notifications.html': {'Mark all as read':'notifications.html','Clear all':'notifications.html'},
+    'settings.html': {'Settings':'settings.html','Support':'help-support.html','Save changes':'settings.html','+ Add user':'settings.html','+ New template':'settings.html','Revoke':'settings.html','Edit':'settings.html'},
+    'help-support.html': {'Support':'help-support.html','Raise ticket':'help-support.html','Start live chat':'help-support.html'},
+    'create-tender.html': {'Tenders':'tender-list.html','Save as draft':'tender-list.html'},
+    'forgot-password.html': {'Send reset link':'login.html'},
+    'procurement-officer-dashboard.html': {'Tenders':'tender-list.html'}
+  }[page] || {};
+  document.querySelectorAll('a[href="#"]').forEach(a=>{
+    const t=a.textContent.replace(/\s+/g,' ').trim();
+    if(routes[t]) a.href=routes[t];
+  });
+  document.querySelectorAll('button').forEach(b=>{
+    const t=b.textContent.replace(/\s+/g,' ').trim();
+    if(routes[t]) { b.type='button'; b.addEventListener('click',()=>location.href=routes[t]); }
+  });
+  // Common action cards/links that are visually clickable but had no destination.
+  document.querySelectorAll('a:not([href]), button:not([onclick])').forEach(el=>{
+    const t=el.textContent.replace(/\s+/g,' ').trim();
+    if(!t || t==='Renew now' || t==='Upload document') return;
+    if(t==='View') { el.href = page.includes('bidder') ? 'bid-detail.html' : 'compliance-details.html'; }
+  });
+})();
+</script>
+<!-- PRAMAAN STICKY CHATBOT -->
+<style>
+#pramaan-chatbot{position:fixed;right:22px;bottom:22px;z-index:99999;font-family:inherit}
+#pramaan-chatbot .chat-toggle{width:58px;height:58px;border:0;border-radius:50%;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.22);background:#111827;color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center}
+#pramaan-chatbot .chat-panel{display:none;position:absolute;right:0;bottom:70px;width:340px;max-width:calc(100vw - 32px);height:430px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.2);overflow:hidden}
+#pramaan-chatbot.open .chat-panel{display:flex;flex-direction:column}
+#pramaan-chatbot .chat-head{padding:15px 16px;background:#111827;color:#fff;display:flex;align-items:center;justify-content:space-between}
+#pramaan-chatbot .chat-head strong{font-size:15px}
+#pramaan-chatbot .chat-head span{font-size:11px;opacity:.7}
+#pramaan-chatbot .chat-close{background:none;border:0;color:#fff;font-size:20px;cursor:pointer}
+#pramaan-chatbot .chat-body{flex:1;padding:14px;overflow:auto;background:#f8fafc}
+#pramaan-chatbot .msg{padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:13px;line-height:1.45;max-width:88%;background:#fff;border:1px solid #e5e7eb}
+#pramaan-chatbot .msg.bot{margin-right:auto}
+#pramaan-chatbot .msg.user{margin-left:auto;background:#111827;color:#fff;border-color:#111827}
+#pramaan-chatbot .chat-input{display:flex;padding:10px;border-top:1px solid #e5e7eb;background:#fff;gap:8px}
+#pramaan-chatbot input{flex:1;border:1px solid #d1d5db;border-radius:10px;padding:9px 10px;outline:none}
+#pramaan-chatbot .send{border:0;border-radius:10px;padding:0 14px;background:#111827;color:#fff;cursor:pointer}
+</style>
+<div id="pramaan-chatbot" aria-label="Pramaan Assistant">
+  <div class="chat-panel">
+    <div class="chat-head"><div><strong>Pramaan Assistant</strong><br><span>Procurement help</span></div><button class="chat-close" aria-label="Close">×</button></div>
+    <div class="chat-body"><div class="msg bot">Hello! I’m Pramaan Assistant. Ask me about tenders, bids, registration, compliance, or procurement workflows.</div></div>
+    <form class="chat-input"><input aria-label="Ask Pramaan Assistant" placeholder="Type your question…"><button class="send">Send</button></form>
+  </div>
+  <button class="chat-toggle" aria-label="Open Pramaan Assistant">💬</button>
+</div>
+<script>
+(function(){const root=document.getElementById('pramaan-chatbot');if(!root)return;const toggle=root.querySelector('.chat-toggle'),close=root.querySelector('.chat-close'),form=root.querySelector('.chat-input'),input=root.querySelector('input'),body=root.querySelector('.chat-body');toggle.onclick=()=>root.classList.toggle('open');close.onclick=()=>root.classList.remove('open');form.onsubmit=e=>{e.preventDefault();const q=input.value.trim();if(!q)return;body.insertAdjacentHTML('beforeend','<div class="msg user"></div><div class="msg bot">I can help with Pramaan’s procurement workflow. For this prototype, please use the relevant dashboard action or page for the requested task.</div>');body.lastElementChild.previousElementSibling.textContent=q;input.value='';body.scrollTop=body.scrollHeight;};})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/runtime-config.js"></script>
+<script src="assets/supabase.js"></script>
+</body>
+</html>
